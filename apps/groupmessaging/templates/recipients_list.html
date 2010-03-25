@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-<h1> Recipients list </h3>
+<h2> Recipients list </h2>
 <ul>
 {% for recipient in recipients %}
-<li><a href = "{% url recipient recipient.id %}" >
-{{recipient.full_name}}</a></li>
+<li>
+<table> <tr> <td width="200">
+<a href = "{% url recipient recipient.id %}" >
+{{recipient.full_name}}</a> </td> <td>  <a href = "{% url recipients_delete recipient.id %}" >
+[ Delete ]</a></td> </li>
 {% endfor %}
 </ul>
 <p> <a href = "{% url recipient_add %}" > Add new recipient</a></p>

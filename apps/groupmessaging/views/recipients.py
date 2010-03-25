@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding=utf-8
 
+from django.http import HttpResponseRedirect
 from rapidsms.webui.utils import render_to_response
 from groupmessaging.models import Recipient
 from groupmessaging.models import Site
@@ -64,6 +65,21 @@ def recipient(request,context,recipientid=None):
     mycontext = {'recipient':recipient,'form':form, 'recipientid': recipientid,'validationMsg':validationMsg}
     context.update(mycontext)
     return render_to_response(request, 'recipient.html', context)
+
+@webuser_required
+def delete(request,context,recipientid):
+    validationMsg =""
+    recipient = Recipient.objects.get(id=recipientid)
+                
+    try:
+        recipient.delete()
+        validationMsg = "You have successfully deleted this record"
+    except Exception, e :
+        validationMsg = "Failed to delete %s." % e
+
+    mycontext = {'validationMsg':validationMsg}
+    context.update(mycontext)
+    return HttpResponseRedirect('/groupmessaging/recipients')
 
 class RecipientForm(forms.Form):
     firstName = forms.CharField(max_length=50)

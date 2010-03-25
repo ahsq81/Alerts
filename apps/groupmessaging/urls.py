@@ -23,4 +23,6 @@ urlpatterns = patterns('',
         name='recipient'),
     url(r'^groupmessaging/recipients/add/?$', recipients.recipient, \
         name='recipient_add'),
+    url(r'^groupmessaging/recipients/delete/(\d+)/?$', recipients.delete, \
+        name='recipients_delete'),
 )
