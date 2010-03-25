@@ -78,12 +78,24 @@ def add(request, context):
 
     return render_to_response(request, 'new_group.html', context)
 
+
 @webuser_required
 def delete(request, context, group_id):
 
     ''' add function '''
 
+    try:
+        Groups_obj = Group.objects.get(id=group_id)
+        Groups_obj.delete()
+    except Exception, e:
+        return HttpResponse("Error 2 : %s" % e)
+
+    return render_to_response(request, 'groups.html', context)
+
+
 @webuser_required
 def update(request, context, group_id):
 
     ''' add function '''
+
+    return HttpResponse("Under Construction")

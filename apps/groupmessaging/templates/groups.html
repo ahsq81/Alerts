@@ -21,7 +21,7 @@
             <td> {{ group.name }}</td>
             <td> {{ group.managers }}</td>
             <td> {{ group.code }} </td>
-            <td align="center"> <a href="#">Update</a> | <a href="#">Delete</a> </td>
+            <td align="center"> <a href="#">Update</a> | <a href="{% url delete_group group.id %}">Delete</a> </td>
         </tr>
         {% empty %}
         <tr>
