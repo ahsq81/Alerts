@@ -11,6 +11,7 @@ from views import recipients
 urlpatterns = patterns('',
     url(r'^groupmessaging/?$', index.index, name='index'),
     url(r'^groupmessaging/messages/?$', messages.list, name='messages_list'),
+    url(r'^groupmessaging/messages/(\d+)/?$', messages.messageform, name='messages_form'),
     url(r'^groupmessaging/groups/?$', groups.list, name='groups'),
     url(r'^groupmessaging/groups/add_group/?$', groups.add, name='new_group'),
     url(r'^groupmessaging/recipients/?$', recipients.list, \
