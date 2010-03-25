@@ -1,1 +1,11 @@
 {% extends "base.html" %}
+
+{% block content %}
+<h1> Recipients list </h3>
+
+{% for recipient in recipients %}
+<table border="1">
+<tr> <td><a href = "{% url recipient recipient.id %}" > {{recipient.full_name}}</a></td></tr>
+{% endfor %}
+</table>
+{% endblock %}

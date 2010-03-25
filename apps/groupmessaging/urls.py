@@ -14,4 +14,6 @@ urlpatterns = patterns('',
     url(r'^groupmessaging/groups/?$', groups.list, name='manage_groups'),
     url(r'^groupmessaging/recipients/?$', recipients.list, \
         name='recipients_list'),
+    url(r'^groupmessaging/recipients/(\d+)/?$', recipients.recipient, \
+        name='recipient')
 )
