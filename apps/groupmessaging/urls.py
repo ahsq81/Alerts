@@ -6,6 +6,8 @@ from django.conf.urls.defaults import *
 from views import index
 from views import messages
 from views import groups
+from views import recipients
+
 
 urlpatterns = patterns('',
     url(r'groupmessaging/?', index.index, name='index'),
