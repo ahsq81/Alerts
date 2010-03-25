@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-
 {% block content %}
 <h1> Recipients list </h3>
 <ul>
 {% for recipient in recipients %}
-<li><a href = "{% url recipient recipient.id %}" > {{recipient.full_name}}</a></li>
+<li><a href = "{% url recipient recipient.id %}" >
+{{recipient.full_name}}</a></li>
 {% endfor %}
-</ul> 
-
+</ul>
 <p> <a href = "{% url recipient_add %}" > Add new recipient</a></p>
+<p> {{ validationMsg }} </p>
 {% endblock %}
