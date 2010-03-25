@@ -32,8 +32,8 @@ def recipient(request,context,recipientid=None):
                 recipient.active = form.cleaned_data['active']
                 recipient.save()
             else:
-                pass
-                #recipient = Recipient()
+                recipient = Recipient(first_name=form.cleaned_data['firstName'] , last_name=form.cleaned_data['lastName'], identity=form.cleaned_data['identity'],active=form.cleaned_data['active'] )
+                recipient.save()
     else:
         if recipient:
             data = {'firstName': recipient.first_name,'lastName':recipient.last_name,'identity':recipient.identity,'active':recipient.active}
