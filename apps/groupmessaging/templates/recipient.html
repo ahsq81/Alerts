@@ -9,6 +9,9 @@
 
 <input type="submit" value="Submit" />
 </form>
-<a href = "{% url recipients_list %}" >Back to recipient list</a>
-<p> {{ validationMsg }} </p>
+{% endblock %}
+
+{% block submenu %}
+<ul><li><a href = "{% url recipients_list %}" >Back to recipient list</a></li></ul>
+<ul><li>{{ validationMsg }}</li></ul>
 {% endblock %}

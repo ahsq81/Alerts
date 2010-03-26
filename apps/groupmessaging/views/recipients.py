@@ -15,7 +15,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 def list(request, context):
 
     recipients = Recipient.objects.all()
-    paginator = Paginator(recipients,5)
+    paginator = Paginator(recipients,10)
     
     try:
         page = int(request.GET.get('page', '1'))
@@ -28,7 +28,7 @@ def list(request, context):
         recipient_list = paginator.page(paginator.num_pages)
 
 
-    mycontext = {'recipients': recipient_list}
+    mycontext = {'recipients': recipient_list,'count':recipients.count()}
     context.update(mycontext)
     return render_to_response(request, 'recipients_list.html', context)
 
