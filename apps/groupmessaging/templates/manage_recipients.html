@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> Recipients </h3>
+
+<form method="POST" action="{% url manage_recipients %}">
+    {{ formset.management_form }}
+    <table>
+        {% for form in formset.forms %}
+        {{ form }}
+        {% endfor %}
+    </table>
+<input type="submit" value="Submit" />
+</form>
+
+
+{% endblock %}
+
+{% block submenu %}
+<ul><li><a href = "{% url recipients_list %}" >Back to recipient list</a></li></ul>
+<ul><li>{{ validationMsg }}</li></ul>
+{% endblock %}
