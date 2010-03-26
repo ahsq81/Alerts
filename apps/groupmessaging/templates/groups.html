@@ -21,7 +21,7 @@
             <td> {{ group.name }}</td>
             <td> {% for manager in group.managers.select_related %}{{ manager.get_full_name }}, {% endfor %}</td>
             <td> {{ group.code }} </td>
-            <td align="center"> <a href="#">Update</a> | <a href="{% url delete_group group.id %}">Delete</a> </td>
+            <td align="center"> <a href="{% url update_group group.id %}">Update</a> | <a href="{% url delete_group group.id %}">Delete</a> </td>
         </tr>
         {% empty %}
         <tr>
