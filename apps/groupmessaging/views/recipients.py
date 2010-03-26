@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from rapidsms.webui.utils import render_to_response
 from groupmessaging.models import Recipient
 from groupmessaging.models import Site
+from groupmessaging.models import Group
 from groupmessaging.views.common import webuser_required
 from django import forms
 from django.shortcuts import redirect
@@ -106,32 +107,54 @@ class RecipientForm(forms.Form):
     active    = forms.BooleanField(label=(u"Active"),required=False)
     #site      = forms.ModelMultipleChoiceField(queryset= Site.objects.all(), required=True)
 
+
+class BulkRecipientForm(forms.Form):
+       
+    firstName = forms.CharField(label=(u"First Name"), max_length=50)
+    lastName  = forms.CharField(label=(u"Last Name"),max_length=50)
+    identity  = forms.CharField(label=(u"Identity"),max_length=30)
+    active    = forms.BooleanField(label=(u"Active"),required=False)
+
 @webuser_required
 def manage_recipients(request,context):
-    RecipientFormSet = formset_factory(RecipientForm, extra=3)
+
+    RecipientFormSet = formset_factory(BulkRecipientForm, extra=3)
     if request.method == 'POST':
+        groupid = request.POST['group']
+        if groupid and groupid.__len__() > 0:
+            group = Group.objects.get(id=groupid)
+        #groupSite = Group.objects.get(site=context['user'].site)
+        #print groupSite
+        #if groupSite.id <> context['user'].site.id :
+            #raise forms.ValidationError('Invalid user site : user site is different than entered site??')
         formset = RecipientFormSet(request.POST, request.FILES)
         if formset.is_valid():
             try:
-                for i in range(0, self.total_form_count()):
-                    form = self.forms[i]
-                    recipient = Recipient(first_name=form.cleaned_data['firstName'] ,\
+                for form in formset.forms:                
+                    if form.is_valid() and form.cleaned_data:
+                        recipient = Recipient(first_name=form.cleaned_data['firstName'] ,\
                                            last_name=form.cleaned_data['lastName'],\
                                            identity=form.cleaned_data['identity'],\
                                            active=form.cleaned_data['active'],\
                                            site = context['user'].site)
-                    recipient.save()
+                        recipient.save()
+                        if groupid and groupid.__len__() > 0:
+                            group.recipients.add(recipient)
             
             except Exception, e :
                     validationMsg = "Failed to add new recipient %s." % e
+                    raise
        
-            mycontext = {'validationMsg':validationMsg}
+            mycontext = {}  #{'validationMsg':validationMsg}
             context.update(mycontext)
             return redirect(list)
+        else:
+            print "ddsadsd"
     else:
         formset = RecipientFormSet()
-    
-    mycontext = {'formset': formset}
+
+    groups = Group.objects.filter(site=context['user'].site, active=True)
+    mycontext = {'formset': formset, 'groups': groups}
     context.update(mycontext)
     return render_to_response(request, 'manage_recipients.html', context)
    

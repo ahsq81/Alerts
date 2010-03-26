@@ -1,19 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1> Recipients </h3>
 
-<form method="POST" action="{% url manage_recipients %}">
+
+<form action="{% url manage_recipients %}" method="POST" class="pretty">
+<fieldset> 
+    
     {{ formset.management_form }}
     <table>
         {% for form in formset.forms %}
-        {{ form }}
+            <table>
+            <tr>{% if forloop.first %}{% for field in form %}<td>{{ field.label_tag }}</td>{% endfor %}{% endif %}
+            </tr>
+            <tr>
+                {% for field in form %}
+                    <td>{{ field }} 
+                        {%if field.errors %}
+                            <div class='djangoerrors'>
+                            {% for error in field.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        </table>
         {% endfor %}
     </table>
-<input type="submit" value="Submit" />
+Assign inserted recipients to a group :
+ <select name="group">
+        <option label="", value=""></option>
+    {% for group in groups %}
+        <option label="{{ group.name }}", value="{{ group.id }}">{{ group.name }}</option>
+    {% endfor %}
+</select>
+<p class="buttons"> 
+<button type="submit" class="button positive icon tick">Save</button>
+<a class="button negative icon cross" href="{% url recipients_list %}">Cancel</a>
+</p> 
+</fieldset> 
 </form>
-
-
 {% endblock %}
 
 {% block submenu %}
