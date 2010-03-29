@@ -3,6 +3,6 @@
 
 from rapidsms.webui.utils import render_to_response
 
-def index(request):
+def list(request):
 
     return render_to_response(request, 'recipients_list.html', {})
