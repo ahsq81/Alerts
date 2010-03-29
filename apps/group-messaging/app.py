@@ -3,5 +3,6 @@
 
 import rapidsms
 
+
 class App(rapidsms.app.App):
     pass
