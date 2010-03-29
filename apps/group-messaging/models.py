@@ -4,6 +4,7 @@
 ''' Group Messaging Models '''
 
 from django.db import models
+from django.contrib.auth.models import User, UserManager
 
 
 class Site(models.Model):
@@ -15,7 +16,15 @@ class Site(models.Model):
     name = models.CharField(max_length=50)
     status = models.BooleanField()
     credit = models.PositiveIntegerField()
-    manager = models.ForeignKey("User", blank=True, null=True)
+    manager = models.ForeignKey('User', blank=True, null=True)
 
     def __unicode__(self):
         return _(u"%s") % self.name
+
+class WebUser(User):
+
+    # Use UserManager to get the create_user method, etc.
+    objects = UserManager()
+
+    recipients = models.ForeignKey('Recipients')
+
