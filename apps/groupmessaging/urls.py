@@ -9,4 +9,5 @@ from views import messages
 urlpatterns = patterns('',
     url(r'groupmessaging/?', index.index, name='index'),
     url(r'groupmessaging/messages?', messages.list, name='messages_list'),
+    url(r'groupmessaging/groups?', groups.list, name='manage_groups'),
 )
