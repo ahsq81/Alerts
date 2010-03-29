@@ -3,5 +3,6 @@
 
 from rapidsms.webui.utils import render_to_response
 
+
 def list(request):
     return render_to_response(request, 'groups.html', {})
