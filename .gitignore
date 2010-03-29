@@ -1,0 +1,9 @@
+*.pyc
+local.ini
+rapidsms.db
+apps/admin*
+apps/ping*
+apps/logger*
+apps/webapp*
+apps/bonjour*
+apps/dataentry*
