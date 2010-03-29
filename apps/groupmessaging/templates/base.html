@@ -1,1 +1,28 @@
-{% extends base_template %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr"> 
+<head> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+    <meta http-equiv="Content-Style-Type" content="text/css" /> 
+    <title>Souktel Group Messaging System</title> 
+    <link rel="stylesheet" media="screen" type="text/css" href="/static/groupmessaging/chrome.css" title="Default" />
+    <link rel="stylesheet" media="screen" type="text/css" href="/static/groupmessaging/main.css" title="Default" />
+    <script src="/static/groupmessaging/ui.js"></script>
+</head> 
+<body> 
+<div id='header'>
+<h1>{{ user.site }} - Souktel Group Messaging</h1>
+<p>{% block title %}Souktel Group Messaging{% endblock %}</p>
+<p class='login'>Logged in as <a href="/logout/" title="logout or sign-in as a different user.">{{ user.username }}</a></p>
+</div>
+
+<div id='content'>
+{% block content %}
+<h2>Hello World</h2>
+{% endblock %}
+</div>
+</body>
+<script> 
+  enableHelpTooltips();
+</script> 
+</html> 

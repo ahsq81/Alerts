@@ -1,0 +1,10 @@
+
+div#header p.login {
+    line-height: 1.6em;
+    font-style: normal;
+    float: right;
+}
+
+div#header p.login a {
+    color: white;
+}

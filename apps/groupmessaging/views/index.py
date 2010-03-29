@@ -3,6 +3,12 @@
 
 from rapidsms.webui.utils import render_to_response
 
-def index(request):
+from groupmessaging.views.common import webuser_required
 
-    return render_to_response(request, 'index.html', {})
+
+@webuser_required
+def index(request, context):
+
+    mycontext = {'title': 'regyo'}
+    context.update(mycontext)
+    return render_to_response(request, 'index.html', context)
