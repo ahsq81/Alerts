@@ -6,5 +6,5 @@ from django.conf.urls.defaults import *
 from views import index
 
 urlpatterns = patterns('',
-    url(r'group-messaging/?', index.index, name='index'),
+    url(r'groupmessaging/?', index.index, name='index'),
 )
