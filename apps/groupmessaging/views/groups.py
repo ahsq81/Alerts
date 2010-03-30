@@ -45,4 +45,4 @@ def add(request, context):
     mycontext = {'title': 'regyo', 'form': form}
     context.update(mycontext)
 
-    return render_to_response(request, 'newgroups.html', context)
+    return render_to_response(request, 'new_group.html', context)
