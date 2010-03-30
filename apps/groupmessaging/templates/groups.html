@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<table border="1" align="center" width="80%">
+    <tbody>
+       {% for group in Glist %}
+        <tr>
+            <td><a href=""> {{ group }}</a></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td>No group</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td><a href="{% url new_group %}">Add New Group >></a></td>
+        </tr>
+    </tbody>
+</table>
+
+
+{% endblock %}

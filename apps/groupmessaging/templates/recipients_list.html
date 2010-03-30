@@ -2,10 +2,11 @@
 
 {% block content %}
 <h1> Recipients list </h3>
-
+<ul>
 {% for recipient in recipients %}
-<table border="1">
-<tr> <td><a href = "{% url recipient recipient.id %}" > {{recipient.full_name}}</a></td></tr>
+<li><a href = "{% url recipient recipient.id %}" > {{recipient.full_name}}</a></li>
 {% endfor %}
-</table>
+</ul> 
+
+<p> <a href = "{% url recipient_add %}" > Add new recipient</a></p>
 {% endblock %}

@@ -26,11 +26,11 @@ def messageform(request, context, messageid):
     
         form = MessageForm(request.POST)
         if form.is_valid(): 
-        
+            
             return HttpResponseRedirect('/thanks/') 
     else:
         mess = Message.objects.get(id=messageid)
-        data = {'name': mess.name}
+        data = {'name': mess.name, 'text': mess.text, 'code':mess.code}
         form = MessageForm(data) 
         
     mycontext = {'mess':mess, 'form':form}
@@ -40,6 +40,7 @@ def messageform(request, context, messageid):
 class MessageForm(forms.Form):
 
   
+    code = forms.CharField(max_length=20)
     name = forms.CharField(max_length=50)
     text = forms.CharField()
-    code = forms.CharField(max_length=20)
+    
