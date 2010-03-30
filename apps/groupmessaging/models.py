@@ -63,6 +63,9 @@ class Recipient(models.Model):
 
     A person with phone number and backend '''
 
+    class Meta:
+        unique_together = ('identity', 'backend')
+
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
 
