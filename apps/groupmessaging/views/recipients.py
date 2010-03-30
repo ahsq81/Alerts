@@ -3,6 +3,7 @@
 
 from rapidsms.webui.utils import render_to_response
 from groupmessaging.models import Recipient
+from groupmessaging.models import Site
 from groupmessaging.views.common import webuser_required
 from django import forms
 
@@ -34,7 +35,11 @@ def recipient(request,context,recipientid=None):
                 validationMsg = "You have successfully updated the recipient"
             else:
                 try:
-                    recipient = Recipient(first_name=form.cleaned_data['firstName'] , last_name=form.cleaned_data['lastName'], identity=form.cleaned_data['identity'],active=form.cleaned_data['active'] )
+                    recipient = Recipient(first_name=form.cleaned_data['firstName'] , \
+                                           last_name=form.cleaned_data['lastName'], \
+                                           identity=form.cleaned_data['identity'], \
+                                           active=form.cleaned_data['active'], \
+                                           site = context['user'].site)
                     recipient.save()
                     validationMsg = "You have successfully inserted a recipient %s." % form.cleaned_data['firstName']
                 except Exception, e :
@@ -65,5 +70,7 @@ class RecipientForm(forms.Form):
     lastName  = forms.CharField(max_length=50)
     identity  = forms.CharField(max_length=30)
     active    = forms.BooleanField(required=False)
+    #site      = forms.ModelMultipleChoiceField(queryset= Site.objects.all(), required=True)
+
 
    
