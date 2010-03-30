@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<table border="1">
+<tr>
+<th>Code</th>
+<th>Messgae</th>
+<th>Action</th>
+</tr>
+{% for message in messages %}
+<tr>
+<td><a href="">{{ message.code }}</a></td>
+<td>{{ message.name }}</td>
+<td>Add</td>
+</tr>
+{% endfor %}
+<tr>
+<td>Totals</td> <td></td>
+</tr>
+</table>
+{% endblock %}
+
+
+
