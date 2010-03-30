@@ -16,7 +16,7 @@ def list(request,context):
 
 @webuser_required
 def recipient(request,context,recipientid=None):
-    print recipientid
+    validationMsg =""
     if not recipientid or int(recipientid) == 0:
         recipient = None
     else:
@@ -31,9 +31,21 @@ def recipient(request,context,recipientid=None):
                 recipient.identity = form.cleaned_data['identity']
                 recipient.active = form.cleaned_data['active']
                 recipient.save()
+                validationMsg = "You have successfully updated the recipient"
             else:
-                recipient = Recipient(first_name=form.cleaned_data['firstName'] , last_name=form.cleaned_data['lastName'], identity=form.cleaned_data['identity'],active=form.cleaned_data['active'] )
-                recipient.save()
+                try:
+                    recipient = Recipient(first_name=form.cleaned_data['firstName'] , last_name=form.cleaned_data['lastName'], identity=form.cleaned_data['identity'],active=form.cleaned_data['active'] )
+                    recipient.save()
+                    validationMsg = "You have successfully inserted a recipient %s." % form.cleaned_data['firstName']
+                except Exception, e :
+                    validationMsg = "Failed to add new recipient %s." % e
+
+                recipients = Recipient.objects.all()
+                mycontext = {'recipients': recipients,'validationMsg':validationMsg}
+                context.update(mycontext)
+                return render_to_response(request, 'recipients_list.html', context)
+                
+                
     else:
         if recipient:
             data = {'firstName': recipient.first_name,'lastName':recipient.last_name,'identity':recipient.identity,'active':recipient.active}
@@ -44,7 +56,7 @@ def recipient(request,context,recipientid=None):
     if not recipientid:
         recipientid = 0
 
-    mycontext = {'recipient':recipient,'form':form, 'recipientid': recipientid}
+    mycontext = {'recipient':recipient,'form':form, 'recipientid': recipientid,'validationMsg':validationMsg}
     context.update(mycontext)
     return render_to_response(request, 'recipient.html', context)
 
