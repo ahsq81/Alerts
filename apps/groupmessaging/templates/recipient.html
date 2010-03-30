@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> Recipient </h3>
+
+<form action="{% url recipient recipientid %}" method="POST">
+
+{{ form.as_p }}
+
+<input type="submit" value="Submit" />
+</form>
+<a href = "{% url recipients_list %}" >Back to recipient list</a>
+
+{% endblock %}
