@@ -5,15 +5,21 @@ from django import forms
 from groupmessaging.views.common import webuser_required
 from groupmessaging.models import Group
 from groupmessaging.models import Site
+from groupmessaging.models import Recipient
+from groupmessaging.models import WebUser
 from rapidsms.webui.utils import render_to_response
 from django.http import HttpResponse
 
 
 class GroupForm(forms.Form):
-    subject = forms.CharField(max_length=100)
-    message = forms.CharField()
-    sender = forms.EmailField()
-    cc_myself = forms.BooleanField(required=False)
+    code = forms.CharField(max_length='15', required=True)
+    name = forms.CharField(max_length='50', required=True)
+   # site = forms.ForeignKey('Site')
+    active = forms.BooleanField(required=False)
+    recipients = forms.ModelMultipleChoiceField(\
+    queryset=Recipient.objects.filter(active=True), required=True)
+    managers = forms.ModelMultipleChoiceField(\
+    queryset=WebUser.objects.all(), required=True)
 
 
 @webuser_required
@@ -37,12 +43,37 @@ def list(request, context):
     return render_to_response(request, 'groups.html', context)
 
 
+@webuser_required
 def add(request, context):
 
     ''' add function '''
 
-    form = GroupForm()  # An unbound form
-    mycontext = {'title': 'regyo', 'form': form}
-    context.update(mycontext)
+    if request.method == 'POST':  # If the form has been submitted...
+        form = GroupForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+            code = form.cleaned_data['code']
+            name = form.cleaned_data['name']
+            active = form.cleaned_data['active']
+            recipients = form.cleaned_data['recipients']
+            managers = form.cleaned_data['managers']
+
+            try:
+                ins = Group(code=code, name=name,\
+                site=context['user'].site, active=active)
+                ins.save()
+                for recipient in recipients:
+                    ins.recipients.add(recipient)
+                for manager in managers:
+                    ins.recipients.add(manager)
+
+            except Exception, e:
+                return HttpResponse("Error 2 : %s" % e)
+
+            return render_to_response(request, 'groups.html', context)
+
+    else:
+        form = GroupForm()  # An unbound form
+        mycontext = {'form': form}
+        context.update(mycontext)
 
     return render_to_response(request, 'new_group.html', context)
