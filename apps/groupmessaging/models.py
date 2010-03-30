@@ -74,6 +74,8 @@ class Recipient(models.Model):
 
     active = models.BooleanField(default=True)
 
+    site = models.ForeignKey('Site')
+
     def __unicode__(self):
         return _(u"%(full_name)s") % {'full_name': self.full_name}
 
@@ -149,6 +151,7 @@ class OutgoingLog(models.Model):
     RAW_STATUSES = [VERBOSE_PENDING, VERBOSE_DELIVERED, \
                     VERBOSE_TIMEOUT, VERBOSE_FAILED]
 
+    sender = models.ForeignKey('WebUser')
     identity = models.CharField(max_length=30)
     backend = models.CharField(max_length=15)
     text = models.TextField()
