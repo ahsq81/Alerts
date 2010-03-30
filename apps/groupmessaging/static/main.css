@@ -8,3 +8,34 @@ div#header p.login {
 div#header p.login a {
     color: white;
 }
+
+h2 {
+    border-top: 0;
+    padding-top: 1em;
+}
+
+div#menu {
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #3a75bd;
+}
+
+div#menu ul {
+    list-style-type: none;
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+div#menu ul li {
+    display: inline;
+    padding-left: 1em;
+}
+
+div#menu ul li a {
+    font-weight: bold;
+    margin: 0;
+    display: inline;
+    color: #5296de;
+    text-decoration: none;
+}

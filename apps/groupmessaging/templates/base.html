@@ -12,8 +12,18 @@
 <body> 
 <div id='header'>
 <h1>{{ user.site }} - Souktel Group Messaging</h1>
-<p>{% block title %}Souktel Group Messaging{% endblock %}</p>
+<p>{% block title %}{% endblock %}</p>
 <p class='login'>Logged in as <a href="/accounts/logout/" title="logout or sign-in as a different user.">{{ user.get_full_name }}</a></p>
+</div>
+
+<div id='menu'>
+<ul>
+<li><a href="{% url index %}">Dashboard</a> {% include "help_menu_dashboard.html" %}</li>
+<li><a href="{% url recipients_list %}">Manage Groups</a> {% include "help_menu_groups.html" %}</li>
+<li><a href="{% url groups %}">Manage Recipients</a> {% include "help_menu_recipients.html" %}</li>
+<li><a href="{% url messages_list %}">Manage Message Templates</a> {% include "help_menu_messages.html" %} </li>
+<li><a href="">View Logs</a> {% include "help_menu_logs.html" %}</li>
+</ul>
 </div>
 
 <div id='content'>
