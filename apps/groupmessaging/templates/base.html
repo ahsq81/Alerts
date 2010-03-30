@@ -13,7 +13,7 @@
 <div id='header'>
 <h1>{{ user.site }} - Souktel Group Messaging</h1>
 <p>{% block title %}Souktel Group Messaging{% endblock %}</p>
-<p class='login'>Logged in as <a href="/accounts/logout/" title="logout or sign-in as a different user.">{{ user.username }}</a></p>
+<p class='login'>Logged in as <a href="/accounts/logout/" title="logout or sign-in as a different user.">{{ user.get_full_name }}</a></p>
 </div>
 
 <div id='content'>

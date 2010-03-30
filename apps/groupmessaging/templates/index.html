@@ -1,10 +1,34 @@
 {% extends "base.html" %}
+{% load humanize %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block content %}
 
-<h2>Dashboard</h2>
+<h2>Latest Messages <div class='help'><div><p>Hello</p></div></div></h2>
+
+<table class='list'> 
+    <colgroup> 
+    <col class='number' />
+    <col class='name' />
+    <col class='name' />
+    <col class='number' />
+    </colgroup> 
+<tr class='secondRow NotFiltered'>
+    <th class='name'>From</th> 
+    <th class='name'>To (Groups)</th>
+    <th class='name'>Message</th>
+    <th class='name'>Date</th>
+</tr>
+{% for message in latest_messages %}
+<tr>
+<td>{{ message.sender }}</td> 
+<td>{{ message.groups_list }}</td>
+<td>{{ message.short_text }}</td>
+<td>{{ message.date|naturalday }}</td>
+</tr>
+{% endfor %}
+</table>
 
 <p>Preparing Dashboard...</p>
 
