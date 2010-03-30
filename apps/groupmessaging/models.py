@@ -15,8 +15,8 @@ class Site(models.Model):
     Sites holds groups and users and recipients '''
 
     name = models.CharField(verbose_name=ugettext_lazy(u"Name"), max_length=50)
-    status = models.BooleanField()
-    credit = models.PositiveIntegerField()
+    active = models.BooleanField(default=True)
+    credit = models.PositiveIntegerField(default=0)
     manager = models.ForeignKey('WebUser', blank=True, null=True, \
                                 related_name='managing')
 
@@ -35,7 +35,7 @@ class WebUser(User):
     recipient = models.ForeignKey('Recipient', blank=True, null=True)
     site = models.ForeignKey('Site', related_name='managing')
 
-    comment = models.CharField(max_length=100)
+    comment = models.CharField(max_length=100, blank=True)
 
 
 class Group(models.Model):
@@ -50,8 +50,8 @@ class Group(models.Model):
     code = models.CharField(max_length='15')
     name = models.CharField(max_length='50')
     site = models.ForeignKey('Site')
-    status = models.BooleanField()
-    recipients = models.ManyToManyField('Recipient')
+    active = models.BooleanField(default=True)
+    recipients = models.ManyToManyField('Recipient', blank=True)
     managers = models.ManyToManyField('WebUser')
 
     def __unicode__(self):
@@ -69,7 +69,7 @@ class Recipient(models.Model):
     identity = models.CharField(max_length=30)
     backend = models.CharField(max_length=15, default='dataentry')
 
-    status = models.BooleanField()
+    active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return _(u"%(full_name)s") % {'full_name': self.full_name}
@@ -89,7 +89,7 @@ class Message(models.Model):
     site = models.ForeignKey('Site')
 
     def __unicode__(self):
-        return _(u"%(name)s") % self.name
+        return _(u"%(name)s") % {'name': self.name}
 
 
 class SendingLog(models.Model):
@@ -101,8 +101,23 @@ class SendingLog(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
 
+    @property
+    def short_text(self):
+        if self.text.__len__() > 50:
+            return _(u"%(striptext)s...") % {'striptext': self.text}
+        else:
+            return _(u"%(text)s") % {'text': self.text}
+
+    def groups_list(self):
+        glist = []
+        for group in self.groups.all():
+            glist.append(group.name)
+        return _(u", ").join(glist)
+
     def __unicode__(self):
-        return _(u"%(text)s to %(groups)s on %(date)s") % {}
+        return _(u"From %(from)s to %(groups)s on %(date)s: %(text)s") % \
+               {'text': self.short_text, 'groups': self.groups_list(),
+                'date': self.date.strftime('%x'), 'from': self.sender}
 
 
 class OutgoingLog(models.Model):
@@ -116,12 +131,20 @@ class OutgoingLog(models.Model):
     TIMEOUT = 2
     FAILED = 3
 
+    VERBOSE_PENDING = _(u"Pending")
+    VERBOSE_DELIVERED = _(u"Delivered")
+    VERBOSE_TIMEOUT = _(u"Timed Out")
+    VERBOSE_FAILED = _(u"Failed")
+
     STATUSES = (
-        (PENDING, ugettext_lazy(u"Pending")),
-        (DELIVERED, ugettext_lazy(u"Delivered")),
-        (TIMEOUT, ugettext_lazy(u"Timed Out")),
-        (FAILED, ugettext_lazy(u"Failed")),
+        (PENDING, ugettext_lazy(VERBOSE_PENDING)),
+        (DELIVERED, ugettext_lazy(VERBOSE_DELIVERED)),
+        (TIMEOUT, ugettext_lazy(VERBOSE_TIMEOUT)),
+        (FAILED, ugettext_lazy(VERBOSE_FAILED)),
     )
+
+    RAW_STATUSES = [VERBOSE_PENDING, VERBOSE_DELIVERED, \
+                    VERBOSE_TIMEOUT, VERBOSE_FAILED]
 
     identity = models.CharField(max_length=30)
     backend = models.CharField(max_length=15)
@@ -135,10 +158,10 @@ class OutgoingLog(models.Model):
 
     @property
     def status_text(self):
-        for status, name in self.STATUSES:
-            if status == self.status:
-                return name
-        return self.status
+        try:
+            return self.RAW_STATUSES[int(self.status)]
+        except:
+            return self.status
 
     def __unicode__(self):
         return _(u"%(text)s to %(identity)s: %(status)s") % \
