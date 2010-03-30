@@ -19,6 +19,6 @@ def list(request, context):
 def messageform(request, messageid):
     '''form for Add/Edit messages'''
     
-    messagea = Message.objects.get(id=messageid)
-    return render_to_response(request,"message_form.html",{"messagea":messagea})
+    mess = Message.objects.get(id=messageid)
+    return render_to_response(request,"messages_form.html",{"mess":mess})
     
