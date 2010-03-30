@@ -77,3 +77,13 @@ def add(request, context):
         context.update(mycontext)
 
     return render_to_response(request, 'new_group.html', context)
+
+@webuser_required
+def delete(request, context, group_id):
+
+    ''' add function '''
+
+@webuser_required
+def update(request, context, group_id):
+
+    ''' add function '''
