@@ -10,15 +10,36 @@ from groupmessaging.models import Message
 @webuser_required
 def list(request, context):
     
+    
+    
     messages = Message.objects.all()
     mycontext = {'messages':messages}
     context.update(mycontext)
+       
     return render_to_response(request, 'messages.html', context)
 
-    
-def messageform(request, messageid):
+@webuser_required
+def messageform(request, context, messageid):
     '''form for Add/Edit messages'''
     
-    mess = Message.objects.get(id=messageid)
-    return render_to_response(request,"messages_form.html",{"mess":mess})
+    if request.method == 'POST':
     
+        form = MessageForm(request.POST)
+        if form.is_valid(): 
+        
+            return HttpResponseRedirect('/thanks/') 
+    else:
+        mess = Message.objects.get(id=messageid)
+        data = {'name': mess.name}
+        form = MessageForm(data) 
+        
+    mycontext = {'mess':mess, 'form':form}
+    context.update(mycontext)
+    return render_to_response(request,"messages_form.html",context)
+    
+class MessageForm(forms.Form):
+
+  
+    name = forms.CharField(max_length=50)
+    text = forms.CharField()
+    code = forms.CharField(max_length=20)
