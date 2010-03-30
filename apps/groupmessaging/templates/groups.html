@@ -4,18 +4,32 @@
 {% block content %}
 
 <table border="1" align="center" width="80%">
+    
+    <thead>
+        <tr>
+            <th>Group Code</th>
+            <th>Group Name</th>
+            <th>Group Manager</th>
+            <th># Recipients</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
     <tbody>
        {% for group in Glist %}
         <tr>
-            <td><a href=""> {{ group }}</a></td>
+            <td> {{ group.code }}</td>
+            <td> {{ group.name }}</td>
+            <td> {{ group.managers }}</td>
+            <td> {{ group.code }} </td>
+            <td align="center"> <a href="#">Update</a> | <a href="#">Delete</a> </td>
         </tr>
         {% empty %}
         <tr>
-            <td>No group</td>
+            <td >No group</td>
         </tr>
         {% endfor %}
         <tr>
-            <td><a href="{% url new_group %}">Add New Group >></a></td>
+            <td colspan="5"><br><a href="{% url new_group %}">Add New Group >></a></td>
         </tr>
     </tbody>
 </table>
