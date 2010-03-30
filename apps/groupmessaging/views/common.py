@@ -15,7 +15,7 @@ class WebUserAuthenticator:
     def __init__(self, method):
         self.view = method
 
-    def authenticate(self, request):
+    def authenticate(self, request, *params, **kparams):
         self.request = request
 
         if '_auth_user_id' in request.session:
@@ -28,6 +28,6 @@ class WebUserAuthenticator:
 
         if user:
             commons = {'user': user}
-            return self.view(request, commons)
+            return self.view(request, commons, *params, **kparams)
         else:
             return HttpResponseRedirect('/accounts/login')
