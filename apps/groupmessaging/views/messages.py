@@ -30,7 +30,6 @@ def messageform(request, context, messageid=None):
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
-            print form.cleaned_data['code']
             mess.code =  form.cleaned_data['code']
             mess.name =  form.cleaned_data['name']
             mess.text =  form.cleaned_data['text']
