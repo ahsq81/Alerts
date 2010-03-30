@@ -48,6 +48,15 @@ def messageform(request, context, messageid=None):
     mycontext = {'mess':mess, 'form':form}
     context.update(mycontext)
     return render_to_response(request,"messages_form.html",context)
+
+def delete(request, context, messageid):
+
+    
+    mess = Message.objects.get(id=messageid)
+    mess.delete()
+    
+    return render_to_response(request,"messages_delete.html",context)
+
     
 class MessageForm(forms.Form):
 
