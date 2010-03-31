@@ -15,16 +15,17 @@ h2 {
 }
 
 div#menu {
-    padding-bottom: 1em;
-    margin-bottom: 1em;
     border-bottom: 1px solid #3a75bd;
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
 }
 
 div#menu ul {
     list-style-type: none;
-    display: inline;
+    display: block;
     margin: 0;
     padding: 0;
+    padding-bottom: 0.5em;
 }
 
 div#menu ul li {
