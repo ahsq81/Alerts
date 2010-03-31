@@ -1,15 +1,53 @@
 {% extends "base.html" %}
+
+{% block javascript %}
+<script>
+function deleteRecipient(url){
+ if (confirm("Do you really want to delete this recipient ??")) {
+   window.location=url;
+ } 
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <h2> Recipients list </h2>
-<ul>
-{% for recipient in recipients %}
-<li>
-<table> <tr> <td width="200">
-<a href = "{% url recipient recipient.id %}" >
-{{recipient.full_name}}</a> </td> <td>  <a href = "{% url recipients_delete recipient.id %}" >
-[ Delete ]</a></td> </li>
+<table border="0" cellspacing="0" cellpadding="0" width="50%">
+<tr>
+<td width="150" bgcolor="#cccccc"> Recipient name </td>
+<td width="130" bgcolor="#cccccc"> Recipient identity </td>
+<td width="100" bgcolor="#cccccc"> Active </td>
+<td width="40" bgcolor="#cccccc"> &nbsp; </td>
+<td width="40" bgcolor="#cccccc"> &nbsp; </td>
+</tr>
+{% for recipient in recipients.object_list %}
+<tr>
+<td>{{recipient.full_name}}</td>
+<td>{{recipient.identity}}</td>
+<td>{{recipient.active}}</td>
+<td><a style = "text-decoration:none" href = "{% url recipient recipient.id %}" >
+[ Edit ] </a></td>
+<td><a style = "text-decoration:none" href = "javascript:deleteRecipient('{% url recipients_delete recipient.id %}')" >
+[ Delete ] </a></td>
+</tr>
 {% endfor %}
-</ul>
+
+<tr>
+<td colspan="5" width="150" bgcolor="#cccccc"><span>
+        {% if recipients.has_previous %}
+            <a href="?page={{ recipients.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ recipients.number }} of {{ recipients.paginator.num_pages }}.
+        </span>
+
+        {% if recipients.has_next %}
+            <a href="?page={{ recipients.next_page_number }}">next</a>
+        {% endif %}
+    </span> </td>
+</tr>
+</table>
 <p> <a href = "{% url recipient_add %}" > Add new recipient</a></p>
 <p> {{ validationMsg }} </p>
 {% endblock %}
