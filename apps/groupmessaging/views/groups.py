@@ -9,6 +9,7 @@ from groupmessaging.models import Recipient
 from groupmessaging.models import WebUser
 from rapidsms.webui.utils import render_to_response
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 
 
@@ -101,7 +102,7 @@ def delete(request, context, group_id):
     except Exception, e:
         return HttpResponse("Error 2 : %s" % e)
 
-    return render_to_response(request, 'groups.html', context)
+    return redirect(list)
 
 
 @webuser_required
