@@ -51,7 +51,6 @@ def list(request, context):
     mycontext = {'title': 'regyo', 'Glist': Groups_obj}
     context.update(mycontext)
 
-
     return render_to_response(request, 'groups.html', context)
 
 
