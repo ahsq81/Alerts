@@ -12,15 +12,20 @@ from django.http import HttpResponse
 
 
 class GroupForm(forms.Form):
+
+    def __init__(self, site, *args, **kwargs):
+        super(GroupForm, self).__init__(*args, **kwargs)
+
+        self.fields['recipients'].choices = \
+        [(recipient.id, recipient.first_name) for recipient \
+        in Recipient.objects.filter(active=True, site=site)]
+
     code = forms.CharField(max_length='15', required=True)
     name = forms.CharField(max_length='50', required=True)
-   # site = forms.ForeignKey('Site')
     active = forms.BooleanField(required=False)
-    recipients = forms.ModelMultipleChoiceField(\
-    queryset=Recipient.objects.filter(active=True), required=True)
+    recipients = forms.MultipleChoiceField()
     managers = forms.ModelMultipleChoiceField(\
     queryset=WebUser.objects.all(), required=True)
-
 
 @webuser_required
 def list(request, context):
@@ -49,7 +54,7 @@ def add(request, context):
     ''' add function '''
 
     if request.method == 'POST':  # If the form has been submitted...
-        form = GroupForm(request.POST)  # A form bound to the POST data
+        form = GroupForm(context['user'].site, request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             code = form.cleaned_data['code']
             name = form.cleaned_data['name']
@@ -72,7 +77,7 @@ def add(request, context):
             return render_to_response(request, 'groups.html', context)
 
     else:
-        form = GroupForm()  # An unbound form
+        form = GroupForm(context['user'].site, {})  # An unbound form
         mycontext = {'form': form}
         context.update(mycontext)
 
