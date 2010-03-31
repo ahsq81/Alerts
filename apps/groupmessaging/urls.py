@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^groupmessaging/messages/add/?$', messages.messageform, name='messages_add'),
     url(r'^groupmessaging/messages/update/(\d+)/?$', messages.messageform, name='messages_form'),
     url(r'^groupmessaging/messages/delete/(\d+)/?$', messages.delete, name='messages_delete'),
+    url(r'^groupmessaging/messages/?$', messages.send, name='messages_send'),
     url(r'^groupmessaging/groups/?$', groups.list, name='groups'),
     url(r'^groupmessaging/groups/add_group/?$', groups.add, name='new_group'),
     url(r'^groupmessaging/groups/delete_group/(\d+)/?$', groups.delete, name='delete_group'),
@@ -24,6 +25,8 @@ urlpatterns = patterns('',
         name='recipient'),
     url(r'^groupmessaging/recipients/add/?$', recipients.recipient, \
         name='recipient_add'),
+    url(r'^groupmessaging/recipients/add_bulk/?$', recipients.manage_recipients, \
+        name='manage_recipients'),
     url(r'^groupmessaging/recipients/delete/(\d+)/?$', recipients.delete, \
         name='recipients_delete'),
 )

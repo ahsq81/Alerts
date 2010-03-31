@@ -73,6 +73,15 @@ def delete(request, context, messageid):
        
     return redirect(list)
 
+def send(request, context, messageid):
+    
+    message = Message.objects.get(id=messageid)    
+    mycontext = {'message':message}
+    context.update(mycontext)
+       
+    return redirect(list)    
+    
+
     
 class MessageForm(forms.Form):
 
