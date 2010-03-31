@@ -1,14 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1> Recipient </h3>
+<form action="{% url recipient recipientid %}" method="POST" class="pretty">
+<fieldset> 
+<legend>
+{% if recipientid %}
+Recipient Update Form
+{% else %}
+New Recipient Form
+{% endif %}
+</legend>
 
-<form action="{% url recipient recipientid %}" method="POST">
+<table>
+{% for field in form %}
+<tr>
+<td>{{ field.label_tag }}</td><td>{{ field }} {%if field.errors %}<div class='djangoerrors'>{% for error in field.errors %}{{ error }}{% endfor %}</div>{% endif %}</td>
+</tr>
+{% endfor %}
+</table>
 
-{{ form.as_p }}
+<p class="buttons"> 
+<button type="submit" class="button positive icon tick">Save</button>
+<a class="button negative icon cross" href="{% url recipients_list %}">Cancel</a>
+</p> 
+</fieldset> 
 
-<input type="submit" value="Submit" />
-</form>
 {% endblock %}
 
 {% block submenu %}
