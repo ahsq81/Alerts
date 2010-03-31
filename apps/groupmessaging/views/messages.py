@@ -46,7 +46,7 @@ def messageform(request, context, messageid=None):
                 mess = Message.objects.all()
                 mycontext = {'mess':mess}
                 context.update(mycontext)
-                return render_to_response(request, 'messages.html', context)
+                return redirect(list)
            
     else:
         if mess :
