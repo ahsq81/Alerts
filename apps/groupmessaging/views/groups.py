@@ -136,13 +136,16 @@ def update(request, context, group_id):
 
     else:
         Groups_obj = Group.objects.get(id=group_id)
-        managers = [(manager.id, manager.first_name) for manager \
-        in Groups_obj.managers.select_related()]
+        managers = [(manager.id) for manager \
+                    in Groups_obj.managers.select_related()]
+
+        recipients = [(recipient.id) for recipient \
+                    in Groups_obj.recipients.select_related()]
 
         form = GroupForm(context['user'].site, \
-        initial={'code': Groups_obj.code, \
-        'name': Groups_obj.name, 'active': Groups_obj.active, \
-        'managers': managers})
+                initial={'code': Groups_obj.code, \
+                'name': Groups_obj.name, 'active': Groups_obj.active, \
+                'managers': managers,'recipients': recipients})
 
         mycontext = {'form': form}
         context.update(mycontext)
