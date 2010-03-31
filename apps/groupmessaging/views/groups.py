@@ -18,12 +18,12 @@ class GroupForm(forms.Form):
         super(GroupForm, self).__init__(*args, **kwargs)
 
         self.fields['recipients'].choices = \
-        [(recipient.id, recipient.first_name) for recipient \
-        in Recipient.objects.filter(active=True, site=site)]
+                [(recipient.id, recipient.first_name) for recipient \
+                in Recipient.objects.filter(active=True, site=site)]
 
         self.fields['managers'].choices = \
-        [(manager.id, manager.first_name) for manager \
-        in WebUser.objects.filter(site=site)]
+                [(manager.id, manager.first_name) for manager \
+                in WebUser.objects.filter(site=site)]
 
     code = forms.CharField(max_length='15', required=True)
     name = forms.CharField(max_length='50', required=True)
@@ -50,7 +50,7 @@ def list(request, context):
 
     mycontext = {'title': 'regyo', 'Glist': Groups_obj}
     context.update(mycontext)
-    print Groups_obj[0].managers
+
     return render_to_response(request, 'groups.html', context)
 
 
@@ -70,14 +70,14 @@ def add(request, context):
 
             try:
                 ins = Group(code=code, name=name,\
-                site=context['user'].site, active=active)
+                        site=context['user'].site, active=active)
                 ins.save()
 
                 for recipient in recipients:
                     ins.recipients.add(recipient)
                 for manager in managers:
                     ins.managers.add(manager)
-                print managers
+
             except Exception, e:
                 return HttpResponse("Error 2 : %s" % e)
 
@@ -121,14 +121,13 @@ def update(request, context, group_id):
 
             try:
                 ins = Group(code=code, name=name,\
-                site=context['user'].site, active=active)
+                    site=context['user'].site, active=active)
                 ins.save()
 
                 for recipient in recipients:
                     ins.recipients.add(recipient)
                 for manager in managers:
                     ins.managers.add(manager)
-                print managers
             except Exception, e:
                 return HttpResponse("Error 2 : %s" % e)
 
@@ -136,13 +135,16 @@ def update(request, context, group_id):
 
     else:
         Groups_obj = Group.objects.get(id=group_id)
-        managers = [(manager.id, manager.first_name) for manager \
-        in Groups_obj.managers.select_related()]
+        managers = [(manager.id) for manager \
+                    in Groups_obj.managers.select_related()]
+
+        recipients = [(recipient.id) for recipient \
+                    in Groups_obj.recipients.select_related()]
 
         form = GroupForm(context['user'].site, \
-        initial={'code': Groups_obj.code, \
-        'name': Groups_obj.name, 'active': Groups_obj.active, \
-        'managers': managers})
+                initial={'code': Groups_obj.code, \
+                'name': Groups_obj.name, 'active': Groups_obj.active, \
+                'managers': managers,'recipients': recipients})
 
         mycontext = {'form': form}
         context.update(mycontext)
