@@ -15,9 +15,7 @@ h2 {
 }
 
 div#menu {
-    border-bottom: 1px solid #3a75bd;
-    margin-bottom: 1em;
-    padding-bottom: 0.5em;
+
 }
 
 div#menu ul {
@@ -25,6 +23,12 @@ div#menu ul {
     display: block;
     margin: 0;
     padding: 0;
+    padding-bottom: 0.5em;
+}
+
+div#menu ul.mainmenu {
+    border-bottom: 1px solid #3a75bd;
+    margin-bottom: 0.5em;
     padding-bottom: 0.5em;
 }
 
