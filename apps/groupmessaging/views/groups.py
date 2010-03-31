@@ -18,12 +18,12 @@ class GroupForm(forms.Form):
         super(GroupForm, self).__init__(*args, **kwargs)
 
         self.fields['recipients'].choices = \
-        [(recipient.id, recipient.first_name) for recipient \
-        in Recipient.objects.filter(active=True, site=site)]
+                [(recipient.id, recipient.first_name) for recipient \
+                in Recipient.objects.filter(active=True, site=site)]
 
         self.fields['managers'].choices = \
-        [(manager.id, manager.first_name) for manager \
-        in WebUser.objects.filter(site=site)]
+                [(manager.id, manager.first_name) for manager \
+                in WebUser.objects.filter(site=site)]
 
     code = forms.CharField(max_length='15', required=True)
     name = forms.CharField(max_length='50', required=True)
@@ -70,7 +70,7 @@ def add(request, context):
 
             try:
                 ins = Group(code=code, name=name,\
-                site=context['user'].site, active=active)
+                        site=context['user'].site, active=active)
                 ins.save()
 
                 for recipient in recipients:
@@ -121,7 +121,7 @@ def update(request, context, group_id):
 
             try:
                 ins = Group(code=code, name=name,\
-                site=context['user'].site, active=active)
+                    site=context['user'].site, active=active)
                 ins.save()
 
                 for recipient in recipients:
