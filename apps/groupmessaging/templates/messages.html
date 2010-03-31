@@ -2,30 +2,56 @@
 
 {% block title %}Messages{% endblock %}
 
+{% block submenu %}
+<ul><li><a href="{% url messages_add %}">Create a new Message Template</a></li></ul>
+{% endblock %}
+
 {% block content %}
 <br>
 <br>
-<table border="1">
-<tr>
-<th>Code</th>
-<th>Messages</th>
-<th>Operations</th>
-</tr>
+<TABLE class='list'>
+    <colgroup> 
+    <col class='number' />
+    <col class='name' />
+    <col class='name' />
+    </colgroup> 
+<tr class='secondRow doNotFilter'>
+    <th class='name'>Code</th> 
+    <th class='name'>Name</th>
+    <th class='name'>Operations</th>
+<tbody>
 {% for message in messages %}
 <tr>
 <td>{{ message.code }}</td>
 <td>{{ message.name }}</td>
 <td>
-    <a  href="{% url messages_add %}">[ Add ]</a>
     <a  href="{% url messages_form message.id %}">[ Edit ]</a>
     <a href="{% url messages_delete message.id %}">[ Delete ]</a>
 </td>
 </tr>
 {% endfor %}
-<tr>
-<td>Totals</td> <td>{{ count }}</td>
-</tr>
+</tbody>
 </table>
+
+<table class='list'> 
+    <colgroup> 
+    <col class='name' />
+    <col class='number' />
+    </colgroup> 
+<tr class='secondRow doNotFilter'>
+    <th class='name'></th> 
+    <th class='number'></th>
+</tr>
+<br>
+<table class='list'> 
+    <colgroup> 
+    <col class='name' />
+    <col class='number' />
+    </colgroup> 
+<tr class='secondRow doNotFilter'>
+    <th class='name'>Total Messages</th> 
+    <th class='number'>{{ count }}</th>
+</tr>
 {% endblock %}
 
 
