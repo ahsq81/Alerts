@@ -50,7 +50,6 @@ def list(request, context):
 
     mycontext = {'title': 'regyo', 'Glist': Groups_obj}
     context.update(mycontext)
-
     return render_to_response(request, 'groups.html', context)
 
 
@@ -120,19 +119,25 @@ def update(request, context, group_id):
             managers = form.cleaned_data['managers']
 
             try:
-                ins = Group(code=code, name=name,\
-                    site=context['user'].site, active=active)
-                ins.save()
+                group = Group.objects.get(id=group_id)
+                group.name = name
+                group.code = code
+                group.active = active
+                group.save()
 
+                group.recipients.clear()
                 for recipient in recipients:
-                    ins.recipients.add(recipient)
+                    group.recipients.add(recipient)
+                group.managers.clear()
                 for manager in managers:
-                    ins.managers.add(manager)
+                    group.managers.add(manager)
+                    
             except Exception, e:
                 return HttpResponse("Error 2 : %s" % e)
 
             return HttpResponseRedirect('/groupmessaging/groups/')
-
+        else:
+           return HttpResponse("invalid")
     else:
         Groups_obj = Group.objects.get(id=group_id)
         managers = [(manager.id) for manager \
@@ -146,7 +151,7 @@ def update(request, context, group_id):
                 'name': Groups_obj.name, 'active': Groups_obj.active, \
                 'managers': managers,'recipients': recipients})
 
-        mycontext = {'form': form}
+        mycontext = {'form': form, 'group': Groups_obj}
         context.update(mycontext)
 
     return render_to_response(request, 'update_group.html', context)

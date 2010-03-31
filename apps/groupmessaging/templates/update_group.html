@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="/groupmessaging/groups/update_group/" method="POST">
+<form action="{% url update_group group.id %}" method="POST">
 {{ form.as_p }}
     <p><input type="submit" value="Save Group" /></p>
 </form>
