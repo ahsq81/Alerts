@@ -50,11 +50,7 @@ def list(request, context):
 
     mycontext = {'title': 'regyo', 'Glist': Groups_obj}
     context.update(mycontext)
-<<<<<<< HEAD:apps/groupmessaging/views/groups.py
-    
-=======
 
->>>>>>> 60e8ccc68343922d164403d531223489eae47d9d:apps/groupmessaging/views/groups.py
     return render_to_response(request, 'groups.html', context)
 
 
