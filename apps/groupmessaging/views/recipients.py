@@ -9,6 +9,7 @@ from groupmessaging.views.common import webuser_required
 from django import forms
 from django.shortcuts import redirect
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.forms.formsets import formset_factory
 
 
 @webuser_required
@@ -105,5 +106,32 @@ class RecipientForm(forms.Form):
     active    = forms.BooleanField(label=(u"Active"),required=False)
     #site      = forms.ModelMultipleChoiceField(queryset= Site.objects.all(), required=True)
 
-
+@webuser_required
+def manage_recipients(request,context):
+    RecipientFormSet = formset_factory(RecipientForm, extra=3)
+    if request.method == 'POST':
+        formset = RecipientFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            try:
+                for i in range(0, self.total_form_count()):
+                    form = self.forms[i]
+                    recipient = Recipient(first_name=form.cleaned_data['firstName'] ,\
+                                           last_name=form.cleaned_data['lastName'],\
+                                           identity=form.cleaned_data['identity'],\
+                                           active=form.cleaned_data['active'],\
+                                           site = context['user'].site)
+                    recipient.save()
+            
+            except Exception, e :
+                    validationMsg = "Failed to add new recipient %s." % e
+       
+            mycontext = {'validationMsg':validationMsg}
+            context.update(mycontext)
+            return redirect(list)
+    else:
+        formset = RecipientFormSet()
+    
+    mycontext = {'formset': formset}
+    context.update(mycontext)
+    return render_to_response(request, 'manage_recipients.html', context)
    
