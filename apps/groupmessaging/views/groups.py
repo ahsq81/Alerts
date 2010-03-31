@@ -50,7 +50,11 @@ def list(request, context):
 
     mycontext = {'title': 'regyo', 'Glist': Groups_obj}
     context.update(mycontext)
+<<<<<<< HEAD:apps/groupmessaging/views/groups.py
     
+=======
+
+>>>>>>> 60e8ccc68343922d164403d531223489eae47d9d:apps/groupmessaging/views/groups.py
     return render_to_response(request, 'groups.html', context)
 
 
@@ -77,7 +81,7 @@ def add(request, context):
                     ins.recipients.add(recipient)
                 for manager in managers:
                     ins.managers.add(manager)
-                print managers
+
             except Exception, e:
                 return HttpResponse("Error 2 : %s" % e)
 
@@ -128,7 +132,6 @@ def update(request, context, group_id):
                     ins.recipients.add(recipient)
                 for manager in managers:
                     ins.managers.add(manager)
-                print managers
             except Exception, e:
                 return HttpResponse("Error 2 : %s" % e)
 
