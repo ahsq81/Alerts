@@ -4,18 +4,16 @@
 from rapidsms.webui.utils import render_to_response
 from groupmessaging.views.common import webuser_required
 from django import forms
+from django.shortcuts import redirect
 from groupmessaging.models import Message
-
 
 @webuser_required
 def list(request, context):
     
-    
-    
     messages = Message.objects.all()
     mycontext = {'messages':messages}
     context.update(mycontext)
-       
+
     return render_to_response(request, 'messages.html', context)
 
 @webuser_required
@@ -49,13 +47,16 @@ def messageform(request, context, messageid=None):
     context.update(mycontext)
     return render_to_response(request,"messages_form.html",context)
 
-def delete(request, context, messageid):
 
+@webuser_required    
+def delete(request, context, messageid):
     
-    mess = Message.objects.get(id=messageid)
-    mess.delete()
-    
-    return render_to_response(request,"messages_delete.html",context)
+    message = Message.objects.get(id=messageid)
+    message.delete()
+    mycontext = {'message':message}
+    context.update(mycontext)
+       
+    return redirect(list)
 
     
 class MessageForm(forms.Form):
