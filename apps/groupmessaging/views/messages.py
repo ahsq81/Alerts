@@ -52,7 +52,7 @@ def messageform(request, context, messageid=None):
         if mess :
             data = {'name': mess.name, 'text': mess.text, 'code':mess.code}          
         else:
-            data = {'code': 'code','name':'name','test':'text'}
+            data = {'code': '','name':'','test':''}
         form = MessageForm(data) 
             
     if not messageid:
