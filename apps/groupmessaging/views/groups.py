@@ -12,8 +12,6 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
 
-
-
 class GroupForm(forms.Form):
 
     def __init__(self, site, *args, **kwargs):
@@ -23,12 +21,16 @@ class GroupForm(forms.Form):
         [(recipient.id, recipient.first_name) for recipient \
         in Recipient.objects.filter(active=True, site=site)]
 
+        self.fields['managers'].choices = \
+        [(manager.id, manager.first_name) for manager \
+        in WebUser.objects.filter(site=site)]
+
     code = forms.CharField(max_length='15', required=True)
     name = forms.CharField(max_length='50', required=True)
     active = forms.BooleanField(required=False)
     recipients = forms.MultipleChoiceField()
-    managers = forms.ModelMultipleChoiceField(\
-    queryset=WebUser.objects.all(), required=True)
+    managers = forms.MultipleChoiceField(required=True)
+
 
 @webuser_required
 def list(request, context):
@@ -58,7 +60,7 @@ def add(request, context):
     ''' add function '''
 
     if request.method == 'POST':  # If the form has been submitted...
-        form = GroupForm(context['user'].site, request.POST)  # A form bound to the POST data
+        form = GroupForm(context['user'].site, request.POST)
         if form.is_valid():  # All validation rules pass
             code = form.cleaned_data['code']
             name = form.cleaned_data['name']
@@ -109,7 +111,7 @@ def update(request, context, group_id):
     ''' add function '''
 
     if request.method == 'POST':  # If the form has been submitted...
-        form = GroupForm(request.POST)  # A form bound to the POST data
+        form = GroupForm(context['user'].site, request.POST)
         if form.is_valid():  # All validation rules pass
             code = form.cleaned_data['code']
             name = form.cleaned_data['name']
@@ -133,7 +135,15 @@ def update(request, context, group_id):
             return HttpResponseRedirect('/groupmessaging/groups/')
 
     else:
-        form = GroupForm( initial={'code': 'Hi there!'})  # An unbound form
+        Groups_obj = Group.objects.get(id=group_id)
+        managers = [(manager.id, manager.first_name) for manager \
+        in Groups_obj.managers.select_related()]
+
+        form = GroupForm(context['user'].site, \
+        initial={'code': Groups_obj.code, \
+        'name': Groups_obj.name, 'active': Groups_obj.active, \
+        'managers': managers})
+
         mycontext = {'form': form}
         context.update(mycontext)
 
