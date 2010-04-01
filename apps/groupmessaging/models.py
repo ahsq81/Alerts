@@ -14,11 +14,14 @@ class Site(models.Model):
     Stores Top Level Entity
     Sites holds groups and users and recipients '''
 
-    name = models.CharField(verbose_name=ugettext_lazy(u"Name"), max_length=50)
-    active = models.BooleanField(default=True)
-    credit = models.PositiveIntegerField(default=0)
+    name = models.CharField(max_length=50, verbose_name=ugettext_lazy(u"Name"))
+    active = models.BooleanField(default=True, \
+                                 verbose_name=ugettext_lazy(u"Enabled?"))
+    credit = models.PositiveIntegerField(default=0, \
+                                         verbose_name=ugettext_lazy(u"Units"))
     manager = models.ForeignKey('WebUser', blank=True, null=True, \
-                                related_name='managing')
+                                related_name='managing', \
+                                verbose_name=ugettext_lazy(u"Manager"))
 
     def __unicode__(self):
         return _(u"%(name)s") % {'name': self.name}
@@ -32,10 +35,13 @@ class WebUser(User):
     # Use UserManager to get the create_user method, etc.
     objects = UserManager()
 
-    recipient = models.ForeignKey('Recipient', blank=True, null=True)
-    site = models.ForeignKey('Site', related_name='managing')
+    recipient = models.ForeignKey('Recipient', blank=True, null=True, \
+                                  verbose_name=ugettext_lazy(u"Recipient"))
+    site = models.ForeignKey('Site', related_name='managing', \
+                             verbose_name=ugettext_lazy(u"Site"))
 
-    comment = models.CharField(max_length=100, blank=True)
+    comment = models.CharField(max_length=100, blank=True, \
+                               verbose_name=ugettext_lazy(u"Comment"))
 
 
 class Group(models.Model):
@@ -47,12 +53,17 @@ class Group(models.Model):
 
         unique_together = ('code', 'site')
 
-    code = models.CharField(max_length='15')
-    name = models.CharField(max_length='50')
-    site = models.ForeignKey('Site')
-    active = models.BooleanField(default=True)
-    recipients = models.ManyToManyField('Recipient', blank=True)
-    managers = models.ManyToManyField('WebUser')
+    code = models.CharField(max_length='15', \
+                            verbose_name=ugettext_lazy(u"Code"))
+    name = models.CharField(max_length='50', \
+                            verbose_name=ugettext_lazy(u"Name"))
+    site = models.ForeignKey('Site', verbose_name=ugettext_lazy(u"Site"))
+    active = models.BooleanField(default=True, \
+                                 verbose_name=ugettext_lazy(u"Enabled?"))
+    recipients = models.ManyToManyField('Recipient', blank=True, \
+                                     verbose_name=ugettext_lazy(u"Recipients"))
+    managers = models.ManyToManyField('WebUser', \
+                                      verbose_name=ugettext_lazy(u"Managers"))
 
     def __unicode__(self):
         return _(u"%(name)s") % {'name': self.name}
@@ -66,15 +77,21 @@ class Recipient(models.Model):
     class Meta:
         unique_together = ('identity', 'backend')
 
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50, \
+                                  verbose_name=ugettext_lazy(u"First Name"))
+    last_name = models.CharField(max_length=50, \
+                                 verbose_name=ugettext_lazy(u"Last Name"))
 
-    identity = models.CharField(max_length=30)
-    backend = models.CharField(max_length=15, default='dataentry')
+    identity = models.CharField(max_length=30, \
+                                verbose_name=ugettext_lazy(u"Phone Number"))
+    backend = models.CharField(max_length=15, default='dataentry', \
+                               verbose_name=ugettext_lazy(u"Backend"), \
+                               help_text=ugettext_lazy(u"Leave Default."))
 
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True, \
+                                 verbose_name=ugettext_lazy(u"Enabled?"))
 
-    site = models.ForeignKey('Site')
+    site = models.ForeignKey('Site', verbose_name=ugettext_lazy(u"Site"))
 
     def __unicode__(self):
         return _(u"%(full_name)s") % {'full_name': self.full_name}
@@ -100,11 +117,15 @@ class Message(models.Model):
 class SendingLog(models.Model):
     ''' Messages Log '''
 
-    sender = models.ForeignKey('WebUser')
-    groups = models.ManyToManyField('Group')
-    recipients = models.ManyToManyField('Recipient')
-    date = models.DateTimeField(auto_now_add=True)
-    text = models.TextField()
+    sender = models.ForeignKey('WebUser', \
+                               verbose_name=ugettext_lazy(u"Sender"))
+    groups = models.ManyToManyField('Group', \
+                                    verbose_name=ugettext_lazy(u"Groups"))
+    recipients = models.ManyToManyField('Recipient', \
+                                     verbose_name=ugettext_lazy(u"Recipients"))
+    date = models.DateTimeField(auto_now_add=True, \
+                                verbose_name=ugettext_lazy(u"Date"))
+    text = models.TextField(verbose_name=ugettext_lazy(u"Content"))
 
     @property
     def short_text(self):
@@ -154,13 +175,19 @@ class OutgoingLog(models.Model):
     RAW_STATUSES = [VERBOSE_PENDING, VERBOSE_DELIVERED, \
                     VERBOSE_TIMEOUT, VERBOSE_FAILED]
 
-    sender = models.ForeignKey('WebUser')
-    identity = models.CharField(max_length=30)
-    backend = models.CharField(max_length=15)
-    text = models.TextField()
-    status = models.CharField(max_length=1, choices=STATUSES, default=QUEUED)
-    sent_on = models.DateTimeField(blank=True, null=True)
-    received_on = models.DateTimeField(blank=True, null=True)
+    sender = models.ForeignKey('WebUser', \
+                               verbose_name=ugettext_lazy(u"Sender"))
+    identity = models.CharField(max_length=30, \
+                                verbose_name=ugettext_lazy(u"Identity"))
+    backend = models.CharField(max_length=15, \
+                               verbose_name=ugettext_lazy(u"Backend"))
+    text = models.TextField(verbose_name=ugettext_lazy(u"Content"))
+    status = models.CharField(max_length=1, choices=STATUSES, default=QUEUED, \
+                              verbose_name=ugettext_lazy(u"Status"))
+    sent_on = models.DateTimeField(blank=True, null=True, \
+                                   verbose_name=ugettext_lazy(u"Send Date"))
+    received_on = models.DateTimeField(blank=True, null=True, \
+                                 verbose_name=ugettext_lazy(u"Reception Date"))
 
     def text_length(self):
         return self.text.__len__()
