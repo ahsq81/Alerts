@@ -9,6 +9,8 @@ from groupmessaging.models import Message
 from groupmessaging.models import Site
 from groupmessaging.models import Recipient
 from groupmessaging.models import Group
+from groupmessaging.utils import send_message
+from datetime import datetime
 
 @webuser_required
 def list(request, context):
@@ -79,8 +81,22 @@ def delete(request, context, messageid):
 def send(request, context):
     
     messages = Message.objects.all()
-    groups   = Group.objects.all()
-    mycontext = {'messages':messages, 'groups':groups}
+    
+    if request.method == 'POST':
+        form = SendMessageForm(context['user'].site, request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['text']
+            date = datetime.now()
+            groups = Group.objects.filter(id__in=form.cleaned_data['groups'])
+            print groups
+            send_message(context['user'], groups, text, date)
+            redirect(list)
+        else:
+            redirect('/groupmessaging')
+    else:
+        form = SendMessageForm(context['user'].site)
+    
+    mycontext = {'messages':messages, 'form': form}
     context.update(mycontext)
     
     
@@ -90,10 +106,19 @@ def send(request, context):
     
 class MessageForm(forms.Form):
 
-  
     code = forms.CharField(max_length=20)
     name = forms.CharField(max_length=50)
     text = forms.CharField(widget=forms.Textarea(),initial="Please enter your message here")
 
+class SendMessageForm(forms.Form):
 
+    def __init__(self, site, *args, **kwargs):
+        super(SendMessageForm, self).__init__(*args, **kwargs)
+
+        self.fields['groups'].choices = \
+                [(group.id, group.name) for group \
+                in Group.objects.filter(active=True, site=site)]
+                
+    groups = forms.MultipleChoiceField()
+    text = forms.CharField(widget=forms.Textarea())
     
