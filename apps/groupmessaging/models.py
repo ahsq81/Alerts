@@ -135,13 +135,16 @@ class OutgoingLog(models.Model):
     DELIVERED = 1
     TIMEOUT = 2
     FAILED = 3
+    QUEUED = 4
 
     VERBOSE_PENDING = _(u"Pending")
     VERBOSE_DELIVERED = _(u"Delivered")
     VERBOSE_TIMEOUT = _(u"Timed Out")
     VERBOSE_FAILED = _(u"Failed")
+    VERBOSE_QUEUED = _(u"Queued")
 
     STATUSES = (
+        (QUEUED, ugettext_lazy(VERBOSE_QUEUED)),
         (PENDING, ugettext_lazy(VERBOSE_PENDING)),
         (DELIVERED, ugettext_lazy(VERBOSE_DELIVERED)),
         (TIMEOUT, ugettext_lazy(VERBOSE_TIMEOUT)),
@@ -155,8 +158,8 @@ class OutgoingLog(models.Model):
     identity = models.CharField(max_length=30)
     backend = models.CharField(max_length=15)
     text = models.TextField()
-    status = models.CharField(max_length=1, choices=STATUSES, default=PENDING)
-    sent_on = models.DateTimeField()
+    status = models.CharField(max_length=1, choices=STATUSES, default=QUEUED)
+    sent_on = models.DateTimeField(blank=True, null=True)
     received_on = models.DateTimeField(blank=True, null=True)
 
     def text_length(self):

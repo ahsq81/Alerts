@@ -7,3 +7,4 @@ apps/logger*
 apps/webapp*
 apps/bonjour*
 apps/dataentry*
+apps/scheduler*
