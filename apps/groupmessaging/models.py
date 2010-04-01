@@ -110,6 +110,13 @@ class Message(models.Model):
     code = models.CharField(max_length=20, blank=True, null=True)
     site = models.ForeignKey('Site')
 
+    @property
+    def short_text(self):
+        if self.text.__len__() > 50:
+            return _(u"%(striptext)s...") % {'striptext': self.text}
+        else:
+            return _(u"%(text)s") % {'text': self.text}
+
     def __unicode__(self):
         return _(u"%(name)s") % {'name': self.name}
 
@@ -158,7 +165,7 @@ class OutgoingLog(models.Model):
     FAILED = 3
     QUEUED = 4
 
-    VERBOSE_PENDING = _(u"Pending")
+    VERBOSE_PENDING = _(u"Sent (pending)")
     VERBOSE_DELIVERED = _(u"Delivered")
     VERBOSE_TIMEOUT = _(u"Timed Out")
     VERBOSE_FAILED = _(u"Failed")
@@ -191,6 +198,13 @@ class OutgoingLog(models.Model):
 
     def text_length(self):
         return self.text.__len__()
+
+    @property
+    def short_text(self):
+        if self.text.__len__() > 50:
+            return _(u"%(striptext)s...") % {'striptext': self.text}
+        else:
+            return _(u"%(text)s") % {'text': self.text}
 
     @property
     def status_text(self):

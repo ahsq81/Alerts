@@ -19,7 +19,8 @@ def process_queue(router):
         back = None
 
         for backend in router.backends:
-            if backend.type == message.backend:
+            if hasattr(backend, 'slug') and backend.slug == message.backend \
+               or hasattr(backend, 'type') and backend.type == message.backend:
                 back = backend
 
         if not back:
