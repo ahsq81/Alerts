@@ -9,7 +9,9 @@ from groupmessaging.models import Recipient
 from groupmessaging.models import WebUser
 from rapidsms.webui.utils import render_to_response
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 
 class GroupForm(forms.Form):
@@ -44,11 +46,22 @@ def list(request, context):
 
     try:
         Groups_obj = Group.objects.filter(site=Site_obj)
+        paginator = Paginator(Groups_obj,10)
 
     except Exception, e:
         return HttpResponse("Error 2 : %s" % e)
 
-    mycontext = {'title': 'regyo', 'Glist': Groups_obj}
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    try:
+        Group_list = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        Group_list = paginator.page(paginator.num_pages)
+
+    mycontext = {'title': 'regyo', 'Glist': Group_list,'count':Groups_obj.count()}
     context.update(mycontext)
     return render_to_response(request, 'groups.html', context)
 
@@ -101,7 +114,7 @@ def delete(request, context, group_id):
     except Exception, e:
         return HttpResponse("Error 2 : %s" % e)
 
-    return render_to_response(request, 'groups.html', context)
+    return redirect(list)
 
 
 @webuser_required

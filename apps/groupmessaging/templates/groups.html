@@ -2,11 +2,11 @@
 {% block title %}Home{% endblock %}
 {% block javascript %}
 <script>
-function deleteGroup(url){
- if (confirm("Do you really want to delete this Group ??")) {
-   window.location=url;
- }
-}
+    function deleteGroup(url){
+        if (confirm("Do you really want to delete this Group ??")) {
+            window.location=url;
+        }
+    }
 </script>
 {% endblock %}
 {% block content %}
@@ -19,10 +19,9 @@ function deleteGroup(url){
         <col class='name' />
         <col class='name' />
         <col class='number' />
-        <col class='name' />
-        <col class='name' />
+        <col class='number' />
+        <col class='number' />
     </colgroup>
-    <thead>
         <tr class='secondRow doNotFilter'>
             <th>Group Code</th>
             <th>Group Name</th>
@@ -31,29 +30,41 @@ function deleteGroup(url){
             <th>&nbsp;</th>
             <th>&nbsp;</th>
         </tr>
-    </thead>
-    <tbody>
-       {% for group in Glist %}
+        {% for group in Glist.object_list %}
         <tr>
             <td class='name'> {{ group.code }}</td>
             <td class='name'> {{ group.name }}</td>
             <td class='name'> {% for manager in group.managers.select_related %}{{ manager.get_full_name }}, {% endfor %}</td>
             <td class='name'> {{ group.recipients.select_related|length }}</td>
             <td align="center"> <a href="{% url update_group group.id %}"><img style="border:0px" src="/static/groupmessaging/edit-icon.jpeg" width="20" height="20" /> </a></td>
-            <td align="center"> <a href= "javascript:deleteRecipient('{% url delete_group group.id %}')"><img style="border:0px" src="/static/groupmessaging/delete-icon.png" width="20" height="20" /></a> </td>
+            <td align="center"> <a href = "javascript:deleteGroup('{% url delete_group group.id %}')"><img style="border:0px" src="/static/groupmessaging/delete-icon.png" width="20" height="20" /></a> </td>
         </tr>
         {% empty %}
         <tr>
             <td >No group</td>
         </tr>
         {% endfor %}
+        <tr class="">
+            <td colspan="6" ><span>
+                    {% if Glist.has_previous %}
+                    <a href="?page={{ Glist.previous_page_number }}">previous</a>
+                    {% endif %}
 
-    </tbody>
+                    <span class="current">
+                        Page {{ Glist.number }} of {{ Glist.paginator.num_pages }}.
+                    </span>
+
+                    {% if Glist.has_next %}
+                    <a href="?page={{ Glist.next_page_number }}">next</a>
+                    {% endif %}
+                </span > &nbsp;&nbsp; |&nbsp;&nbsp;<span> No. of the Groups = {{ count }}</span> </td>
+
+        </tr>
 </table>
 
 
 {% endblock %}
 
 {% block submenu %}
-<ul><li><a href="{% url new_group %}">Add New Group</a></li></ul>
+<ul ><li><a href="{% url new_group %}">Add New Group</a></li></ul>
 {% endblock %}

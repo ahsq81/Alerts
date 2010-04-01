@@ -61,5 +61,8 @@ function deleteRecipient(url){
 {% endblock %}
 
 {% block submenu %}
-<ul><li><a href = "{% url recipient_add %}" > Add new recipient</a></li></ul>
+<ul>
+<li><a href = "{% url recipient_add %}" > Add new recipient</a></li>
+<li><a href = "{% url manage_recipients %}" > Add bulk recipients</a></li>
+</ul>
 {% endblock %}
