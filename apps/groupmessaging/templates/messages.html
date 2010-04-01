@@ -20,14 +20,12 @@ function deleteMessage(url){
     <col class='name' />
     <col class='number' />
     <col class='number' />
-    <col class='number' />
     </colgroup> 
 <tr class='secondRow doNotFilter'>
     <th class='name'>Code</th> 
     <th class='name'>Name</th>
     <th class='name'>Edit</th>
     <th class='name'>Delete</th>
-    <th class='name'>Send</th>
 {% for message in messages %}
 <tr>
 <td class='name'>{{ message.code }}</td>
@@ -36,9 +34,6 @@ function deleteMessage(url){
     src="/static/groupmessaging/edit-icon.jpeg" width="20" height="20" /> </a></td>
 <td class='name'><a href = "javascript:deleteMessage('{% url messages_delete message.id %}')">
 <img style="border:0px" src="/static/groupmessaging/delete-icon.png" width="20" height="20"/> </a>
-</td>
-<td class='name'><a href="{% url messages_send %}">
-<img style="border:0px" src="/static/groupmessaging/send-icon.png" width="20" height="20"/> </a>
 </td>
 </tr>
 {% endfor %}
@@ -53,7 +48,6 @@ function deleteMessage(url){
     <th class='name'></th> 
     <th class='number'></th>
 </tr>
-<br>
 <table class='list'> 
     <colgroup> 
     <col class='name' />
@@ -66,7 +60,10 @@ function deleteMessage(url){
 {% endblock %}
 
 {% block submenu %}
+
 <ul><li><a href="{% url messages_add %}">Create a new Message Template</a></li>
+<li><a href="{% url messages_send %}">Send Message Template</a></li>
+
 {% endblock %}
 
 
