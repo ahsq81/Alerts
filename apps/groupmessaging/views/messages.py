@@ -7,6 +7,8 @@ from django import forms
 from django.shortcuts import redirect
 from groupmessaging.models import Message
 from groupmessaging.models import Site
+from groupmessaging.models import Recipient
+from groupmessaging.models import Group
 
 @webuser_required
 def list(request, context):
@@ -77,7 +79,8 @@ def delete(request, context, messageid):
 def send(request, context):
     
     messages = Message.objects.all()
-    mycontext = {'messages':messages}
+    groups   = Group.objects.all()
+    mycontext = {'messages':messages, 'groups':groups}
     context.update(mycontext)
     
     
