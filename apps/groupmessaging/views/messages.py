@@ -12,59 +12,62 @@ from groupmessaging.models import Group
 from groupmessaging.utils import send_message
 from datetime import datetime
 
+
 @webuser_required
 def list(request, context):
-    
+    ''' List all the Messages'''
     messages = Message.objects.all()
     count = Message.objects.count()
-    mycontext = {'messages':messages, 'count':count}
+    mycontext = {'messages': messages, 'count': count}
     context.update(mycontext)
 
     return render_to_response(request, 'messages.html', context)
 
+
 @webuser_required
 def messageform(request, context, messageid=None):
     '''form for Add/Edit messages'''
-    
     if not messageid or int(messageid) == 0:
         mess = None
-    else :
+    else:
         mess = Message.objects.get(id=messageid)
         
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
-            if mess :
-                mess.code =  form.cleaned_data['code']
-                mess.name =  form.cleaned_data['name']
-                mess.text =  form.cleaned_data['text']
-                mess.site =  context['user'].site
+            if mess:         
+  
+                mess.code = form.cleaned_data['code']
+                mess.name = form.cleaned_data['name']
+                mess.text = form.cleaned_data['text']
+                mess.site = context['user'].site
                 mess.save()
                 
-            else :
-                mess = Message(code = form.cleaned_data['code'] , name = form.cleaned_data['name'], \
-                                           text = form.cleaned_data['text'], \
-                                           site = context['user'].site)  
-                mess.save()
-                
+            else: 
+            
+                mess = Message(code=form.cleaned_data['code'],\
+                                           name=form.cleaned_data['name'],\
+                                            text=form.cleaned_data['text'],\
+                                            site=context['user'].site)  
+                mess.save()             
                 mess = Message.objects.all()
-                mycontext = {'mess':mess}
+                mycontext = {'mess': mess}
                 context.update(mycontext)
                 return redirect(list)
            
     else:
-        if mess :
-            data = {'name': mess.name, 'text': mess.text, 'code':mess.code}          
+        if mess:
+            data = {'name': mess.name, 'text': mess.text, 'code': mess.code}          
         else:
-            data = {'code': '','name':'','test':''}
+            data = {'code': '', 'name': '', 'test': ''}
         form = MessageForm(data) 
             
     if not messageid:
-        messageid=0
+        messageid = 0
     
-    mycontext = {'mess':mess, 'form':form , 'messageid':messageid}
+    mycontext = {'mess': mess, 'form': form, 'messageid': messageid}
     context.update(mycontext)
-    return render_to_response(request,"messages_form.html",context)
+    return render_to_response(request, "messages_form.html", context)
 
 
 @webuser_required    
@@ -72,10 +75,11 @@ def delete(request, context, messageid):
     
     message = Message.objects.get(id=messageid)
     message.delete()
-    mycontext = {'message':message}
+    mycontext = {'message': message}
     context.update(mycontext)
        
     return redirect(list)
+
 
 @webuser_required
 def send(request, context):
@@ -96,19 +100,19 @@ def send(request, context):
     else:
         form = SendMessageForm(context['user'].site)
     
-    mycontext = {'messages':messages, 'form': form}
+    mycontext = {'messages': messages, 'form': form}
     context.update(mycontext)
     
-    
-    return render_to_response(request,"messages_send.html",context)
-    
+    return render_to_response(request, "messages_send.html", context)  
 
     
 class MessageForm(forms.Form):
 
     code = forms.CharField(max_length=20)
     name = forms.CharField(max_length=50)
-    text = forms.CharField(widget=forms.Textarea(),initial="Please enter your message here")
+    text = forms.CharField(widget=forms.Textarea(), 
+            initial="Please enter your message here")
+
 
 class SendMessageForm(forms.Form):
 
@@ -121,4 +125,3 @@ class SendMessageForm(forms.Form):
                 
     groups = forms.MultipleChoiceField()
     text = forms.CharField(widget=forms.Textarea())
-    
