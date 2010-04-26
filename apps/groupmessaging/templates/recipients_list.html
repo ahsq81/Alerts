@@ -1,4 +1,11 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
+
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+
 
 {% block javascript %}
 <script>
@@ -11,7 +18,7 @@ function deleteRecipient(url){
 {% endblock %}
 
 {% block content %}
-<h2> Recipients list </h2>
+<h2>{% trans "Recipients list" %}</h2>
 <table class='list'>
 <colgroup> 
     <col class='name' />
@@ -21,11 +28,11 @@ function deleteRecipient(url){
     <col class='number' />
 </colgroup> 
 <tr class='secondRow doNotFilter'>
-<th class='name' > Recipient name </th>
-<th class='name' > Recipient identity </th>
-<th class='number' style='text-align:center;'> Active </th>
-<th class='number' > Edit </th>
-<th class='number' > Delete </th>
+<th class='name' > {% trans "Recipient name" %}</th>
+<th class='name' > {% trans "Recipient identity" %}</th>
+<th class='number' style='text-align:center;'> {% trans "Active" %} </th>
+<th class='number' >{% trans "Edit" %}</th>
+<th class='number' >{% trans "Delete" %}</th>
 </tr>
 {% for recipient in recipients.object_list %}
 <tr {% if forloop.last %} class=""{% endif %}>
@@ -43,17 +50,17 @@ function deleteRecipient(url){
 <tr class="">
 <td colspan="5"><span>
         {% if recipients.has_previous %}
-            <a href="?page={{ recipients.previous_page_number }}">previous</a>
+            <a href="?page={{ recipients.previous_page_number }}">{% trans "previous" %}</a>
         {% endif %}
 
         <span class="current">
-            Page {{ recipients.number }} of {{ recipients.paginator.num_pages }}.
+            {% trans "Page" %} {{ recipients.number }} {% trans "of" %} {{ recipients.paginator.num_pages }}.
         </span>
 
         {% if recipients.has_next %}
-            <a href="?page={{ recipients.next_page_number }}">next</a>
+            <a href="?page={{ recipients.next_page_number }}">{% trans "next" %}</a>
         {% endif %}
-    </span> &nbsp;&nbsp; |&nbsp;&nbsp;<span> No. of the recipients = {{ count }}</span> </td>
+    </span> &nbsp;&nbsp; |&nbsp;&nbsp;<span> {% trans "No. of the recipients" %} = {{ count }}</span> </td>
   
 </tr>
 </table>
@@ -62,7 +69,7 @@ function deleteRecipient(url){
 
 {% block submenu %}
 <ul>
-<li><a href = "{% url recipient_add %}" > Add new recipient</a></li>
-<li><a href = "{% url manage_recipients %}" > Add bulk recipients</a></li>
+<li><a href = "{% url recipient_add %}" >{% trans " Add new recipient" %}</a></li>
+<li><a href = "{% url manage_recipients %}" >{% trans " Add bulk recipients" %}</a></li>
 </ul>
 {% endblock %}
