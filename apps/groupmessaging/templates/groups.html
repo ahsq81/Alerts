@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Groups" %}{% endblock %}
 {% block javascript %}
 <script>
     function deleteGroup(url){
@@ -11,7 +12,7 @@
 {% endblock %}
 {% block content %}
 <br>
-<h2>Groups List</h2>
+<h2>{% trans "Groups List" %}</h2>
 <br>
 <table class='list'>
     <colgroup>
@@ -23,10 +24,10 @@
         <col class='number' />
     </colgroup>
         <tr class='secondRow doNotFilter'>
-            <th>Group Code</th>
-            <th>Group Name</th>
-            <th>Group Manager</th>
-            <th># Recipients</th>
+            <th>{% trans "Group Code" %}</th>
+            <th>{% trans "Group Name" %}</th>
+            <th>{% trans "Group Manager" %}</th>
+            <th>{% trans "# Recipients" %}</th>
             <th>&nbsp;</th>
             <th>&nbsp;</th>
         </tr>
@@ -41,23 +42,23 @@
         </tr>
         {% empty %}
         <tr>
-            <td >No group</td>
+            <td >{% trans "No group" %}</td>
         </tr>
         {% endfor %}
         <tr class="">
             <td colspan="6" ><span>
                     {% if Glist.has_previous %}
-                    <a href="?page={{ Glist.previous_page_number }}">previous</a>
+                    <a href="?page={{ Glist.previous_page_number }}">{% trans "previous" %}</a>
                     {% endif %}
 
                     <span class="current">
-                        Page {{ Glist.number }} of {{ Glist.paginator.num_pages }}.
+                        {% trans "Page" %} {{ Glist.number }} {% trans "of" %} {{ Glist.paginator.num_pages }}.
                     </span>
 
                     {% if Glist.has_next %}
-                    <a href="?page={{ Glist.next_page_number }}">next</a>
+                    <a href="?page={{ Glist.next_page_number }}">{% trans "next" %}</a>
                     {% endif %}
-                </span > &nbsp;&nbsp; |&nbsp;&nbsp;<span> No. of the Groups = {{ count }}</span> </td>
+                </span > &nbsp;&nbsp; |&nbsp;&nbsp;<span> {% trans "No. of the Groups" %} = {{ count }}</span> </td>
 
         </tr>
 </table>
@@ -66,5 +67,5 @@
 {% endblock %}
 
 {% block submenu %}
-<ul ><li><a href="{% url new_group %}">Add New Group</a></li></ul>
+<ul ><li><a href="{% url new_group %}">{% trans "Add New Group" %}</a></li></ul>
 {% endblock %}

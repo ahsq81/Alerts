@@ -11,6 +11,7 @@ from django import forms
 from django.shortcuts import redirect
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.forms.formsets import formset_factory
+from django.utils.translation import ugettext_lazy as _
 
 
 @webuser_required
@@ -51,7 +52,7 @@ def recipient(request, context, recipientid=None):
                 recipient.identity = form.cleaned_data['identity']
                 recipient.active = form.cleaned_data['active']
                 recipient.save()
-                validationMsg = "You have successfully updated the recipient"
+                validationMsg =_(u"You have successfully updated the recipient")
             else:
                 try:
                     recipient = Recipient(first_name=form.cleaned_data['firstName'] ,\
@@ -101,19 +102,19 @@ def delete(request,context,recipientid):
     return redirect(list)
 
 class RecipientForm(forms.Form):
-    firstName = forms.CharField(label=(u"First Name"), max_length=50)
-    lastName  = forms.CharField(label=(u"Last Name"),max_length=50)
-    identity  = forms.CharField(label=(u"Identity"),max_length=30)
-    active    = forms.BooleanField(label=(u"Active"),required=False)
+    firstName = forms.CharField(label=_(u"First Name"), max_length=50)
+    lastName  = forms.CharField(label=_(u"Last Name"),max_length=50)
+    identity  = forms.CharField(label=_(u"Identity"),max_length=30)
+    active    = forms.BooleanField(label=_(u"Active"),required=False)
     #site      = forms.ModelMultipleChoiceField(queryset= Site.objects.all(), required=True)
 
 
 class BulkRecipientForm(forms.Form):
        
-    firstName = forms.CharField(label=(u"First Name"), max_length=50)
-    lastName  = forms.CharField(label=(u"Last Name"),max_length=50)
-    identity  = forms.CharField(label=(u"Identity"),max_length=30)
-    active    = forms.BooleanField(label=(u"Active"),required=False)
+    firstName = forms.CharField(label=_(u"First Name"), max_length=50)
+    lastName  = forms.CharField(label=_(u"Last Name"),max_length=50)
+    identity  = forms.CharField(label=_(u"Identity"),max_length=30)
+    active    = forms.BooleanField(label=_(u"Active"),required=False)
 
 @webuser_required
 def manage_recipients(request,context):

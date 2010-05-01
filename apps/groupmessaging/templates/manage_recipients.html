@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+{% load i18n %}
 
 <form action="{% url manage_recipients %}" method="POST" class="pretty">
 <fieldset> 
@@ -26,7 +26,7 @@
         </table>
         {% endfor %}
     </table>
-Assign inserted recipients to a group :
+{% trans "Assign inserted recipients to a group :" %}
  <select name="group">
         <option label="", value=""></option>
     {% for group in groups %}
@@ -34,14 +34,14 @@ Assign inserted recipients to a group :
     {% endfor %}
 </select>
 <p class="buttons"> 
-<button type="submit" class="button positive icon tick">Save</button>
-<a class="button negative icon cross" href="{% url recipients_list %}">Cancel</a>
+<button type="submit" class="button positive icon tick">{% trans "Save" %}</button>
+<a class="button negative icon cross" href="{% url recipients_list %}">{% trans "Cancel" %}</a>
 </p> 
 </fieldset> 
 </form>
 {% endblock %}
 
 {% block submenu %}
-<ul><li><a href = "{% url recipients_list %}" >Back to recipient list</a></li></ul>
+<ul><li><a href = "{% url recipients_list %}" >{% trans "Back to recipient list" %}</a></li></ul>
 <ul><li>{{ validationMsg }}</li></ul>
 {% endblock %}

@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-
+from django.utils.translation import ugettext_lazy as _
 
 class GroupForm(forms.Form):
 
@@ -27,11 +27,11 @@ class GroupForm(forms.Form):
                 [(manager.id, manager.first_name) for manager \
                 in WebUser.objects.filter(site=site)]
 
-    code = forms.CharField(max_length='15', required=True)
-    name = forms.CharField(max_length='50', required=True)
-    active = forms.BooleanField(required=False)
-    recipients = forms.MultipleChoiceField()
-    managers = forms.MultipleChoiceField(required=True)
+    code = forms.CharField(label=_(u"Group code"),max_length='15', required=True)
+    name = forms.CharField(label=_(u"Group name"),max_length='50', required=True)
+    active = forms.BooleanField(label=_(u"active"),required=False)
+    recipients = forms.MultipleChoiceField(label=_(u"Group recipients"))
+    managers = forms.MultipleChoiceField(label=_(u"Group managers"),required=True)
 
 
 @webuser_required

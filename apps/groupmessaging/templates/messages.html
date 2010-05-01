@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block javascript %}
 <script>
 function deleteMessage(url){
- if (confirm("Do you really want to delete this Message ??")) {
+ if (confirm("{% trans 'Do you really want to delete this Message ??' %}")) {
    window.location=url;
  } 
 }
@@ -13,7 +13,7 @@ function deleteMessage(url){
 
 {% block content %}
 
-<h2> Message Templates</h2>
+<h2> {% trans "Message Templates" %}</h2>
 <TABLE class='list'>
     <colgroup> 
     <col class='number' />
@@ -22,10 +22,10 @@ function deleteMessage(url){
     <col class='number' />
     </colgroup> 
 <tr class='secondRow doNotFilter'>
-    <th class='name'>Code</th> 
-    <th class='name'>Name</th>
-    <th class='name'>Edit</th>
-    <th class='name'>Delete</th>
+    <th class='name'>{% trans "Code" %}</th> 
+    <th class='name'>{% trans "Name" %}</th>
+    <th class='name'>{% trans "Edit" %}</th>
+    <th class='name'>{% trans "Delete" %}</th>
 {% for message in messages %}
 <tr>
 <td class='name'>{{ message.code }}</td>
@@ -54,15 +54,15 @@ function deleteMessage(url){
     <col class='number' />
     </colgroup> 
 <tr class='secondRow doNotFilter'>
-    <th class='name'>Total Messages</th> 
+    <th class='name'>{% trans "Total Messages" %}</th> 
     <th class='number'>{{ count }}</th>
 </tr>
 {% endblock %}
 
 {% block submenu %}
 
-<ul><li><a href="{% url messages_add %}">Create a new Message Template</a></li>
-<li><a href="{% url messages_send %}">Send Message Template</a></li>
+<ul><li><a href="{% url messages_add %}">{% trans "Create a new Message Template" %}</a></li>
+<li><a href="{% url messages_send %}">{% trans "Send Message Template" %}</a></li>
 
 {% endblock %}
 

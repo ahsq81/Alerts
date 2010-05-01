@@ -10,7 +10,7 @@
 {% block javascript %}
 <script>
 function deleteRecipient(url){
- if (confirm("Do you really want to delete this recipient ??")) {
+ if (confirm("{% trans 'Do you really want to delete this recipient ??' %}")) {
    window.location=url;
  } 
 }

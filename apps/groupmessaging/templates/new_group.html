@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% load i18n %}
 <form action="{% url new_group %}" method="POST" class="pretty">
     <fieldset>
         <legend>
-            New Group Form
+            {% trans "New Group Form" %}
         </legend>
         <table>
             {% for field in form %}
@@ -14,8 +15,8 @@
             {% endfor %}
         </table>
 <p class="buttons">
-<button type="submit" class="button positive icon tick">Save</button>
-<a class="button negative icon cross" href="{% url groups %}">Cancel</a>
+<button type="submit" class="button positive icon tick">{% trans "Save" %}</button>
+<a class="button negative icon cross" href="{% url groups %}">{% trans "Cancel" %}</a>
 </p>
     </fieldset>
 </form>
@@ -25,6 +26,6 @@
 {% endblock %}
 
 {% block submenu %}
-<ul><li><a href = "{% url groups %}" >Back to Group list</a></li></ul>
+<ul><li><a href = "{% url groups %}" >{% trans "Back to Group list" %}</a></li></ul>
 <ul><li>{{ validationMsg }}</li></ul>
 {% endblock %}

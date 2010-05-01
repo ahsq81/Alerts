@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load humanize %}
-
-{% block title %}Dashboard{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Dashboard" %}{% endblock %}
 
 {% block content %}
 
-<h2>Latest Messages</h2>
+<h2>{% trans "Latest Messages" %}</h2>
 
 <table class='list'> 
     <colgroup> 
@@ -15,10 +15,10 @@
     <col class='number' />
     </colgroup> 
 <tr class='secondRow doNotFilter'>
-    <th class='name'>From</th> 
-    <th class='name'>To (Groups)</th>
-    <th class='name'>Message</th>
-    <th class='name'>Date</th>
+    <th class='name'>{% trans "From" %}</th> 
+    <th class='name'>{% trans "To (Groups)" %}</th>
+    <th class='name'>{% trans "Message" %}</th>
+    <th class='name'>{% trans "Date" %}</th>
 </tr>
 {% for message in latest_messages %}
 <tr{% if forloop.last %} class=""{% endif %}>
@@ -31,21 +31,21 @@
 <tr></tr>
 </table>
 
-<h2>Statistics</h2>
+<h2>{% trans "Statistics" %}</h2>
 
-<table class='list'> 
+<table class='list' dir="rtl"> 
     <colgroup> 
     <col class='name' />
     <col class='number' />
     </colgroup> 
 <tr class='secondRow doNotFilter'>
-    <th class='name'>Description</th> 
-    <th class='number'>Value</th>
+    <th style="text-align:{% trans 'left;' %}" class='name'>{% trans "Description" %}</th> 
+    <th style="text-align:{% trans 'left;' %}" class='number'>{% trans "Value" %}</th>
 </tr>
 {% for stat in stats %}
 <tr>
-<td class="name">{{ stat.0 }}</td> 
-<td class="number">{{ stat.1 }}</td>
+<td style="text-align:{% trans 'left;' %}" class="name">{{ stat.0 }}</td> 
+<td style="text-align:{% trans 'left;' %}" class="number">{{ stat.1 }}</td>
 </tr>
 {% endfor %}
 </table>

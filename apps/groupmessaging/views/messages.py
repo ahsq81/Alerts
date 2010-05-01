@@ -11,6 +11,7 @@ from groupmessaging.models import Recipient
 from groupmessaging.models import Group
 from groupmessaging.utils import send_message
 from datetime import datetime
+from django.utils.translation import ugettext_lazy as _
 
 
 @webuser_required
@@ -108,10 +109,10 @@ def send(request, context):
     
 class MessageForm(forms.Form):
 
-    code = forms.CharField(max_length=20)
-    name = forms.CharField(max_length=50)
-    text = forms.CharField(widget=forms.Textarea(), 
-            initial="Please enter your message here")
+    code = forms.CharField(label=_(u"Message code"),max_length=20)
+    name = forms.CharField(label=_(u"Message name"),max_length=50)
+    text = forms.CharField(label=_(u"Message text"),widget=forms.Textarea(), 
+            initial=_(u"Please enter your message here"))
 
 
 class SendMessageForm(forms.Form):
@@ -123,5 +124,5 @@ class SendMessageForm(forms.Form):
                 [(group.id, group.name) for group \
                 in Group.objects.filter(active=True, site=site)]
                 
-    groups = forms.MultipleChoiceField()
-    text = forms.CharField(widget=forms.Textarea())
+    groups = forms.MultipleChoiceField(label=_(u"Groups"))
+    text = forms.CharField(label=_(u"Text"),widget=forms.Textarea())
