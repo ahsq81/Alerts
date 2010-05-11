@@ -157,7 +157,7 @@ msgstr "فشلت"
 
 #: models.py:172
 msgid "Queued"
-msgstr ""
+msgstr "سجلت"
 
 #: models.py:188 views/recipients.py:107 views/recipients.py:116
 msgid "Identity"
