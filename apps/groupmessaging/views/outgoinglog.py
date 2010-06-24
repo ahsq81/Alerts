@@ -74,7 +74,7 @@ def filter(request, context):
     else:
         print "elseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
  
-    mycontext = {'outgoinglog': outgoinglog_list,'form':form ,'count':0,'logs':outgoinglog2.statusMsg}
+    mycontext = {'outgoinglog': outgoinglog_list,'form':form ,'count':0,'logs':outgoinglog2}
     context.update(mycontext)
     return render_to_response(request, 'outgoing_log.html', context )
 
