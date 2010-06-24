@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 @webuser_required
 def list(request, context):
 
-    recipients = Recipient.objects.all()
+    recipients = Recipient.objects.filter(site=context['user'].site)
     paginator = Paginator(recipients,10)
     
     try:

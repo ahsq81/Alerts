@@ -165,7 +165,7 @@ class OutgoingLog(models.Model):
     FAILED = 3
     QUEUED = 4
 
-    VERBOSE_PENDING = _(u"Sent (pending)")
+    VERBOSE_PENDING = _(u"Sent")
     VERBOSE_DELIVERED = _(u"Delivered")
     VERBOSE_TIMEOUT = _(u"Timed Out")
     VERBOSE_FAILED = _(u"Failed")
@@ -180,7 +180,7 @@ class OutgoingLog(models.Model):
     )
 
     RAW_STATUSES = [VERBOSE_PENDING, VERBOSE_DELIVERED, \
-                    VERBOSE_TIMEOUT, VERBOSE_FAILED]
+                    VERBOSE_TIMEOUT, VERBOSE_FAILED,VERBOSE_QUEUED]
 
     sender = models.ForeignKey('WebUser', \
                                verbose_name=ugettext_lazy(u"Sender"))

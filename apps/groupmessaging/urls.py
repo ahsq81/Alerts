@@ -7,6 +7,7 @@ from views import index
 from views import messages
 from views import groups
 from views import recipients
+from views import outgoinglog
 
 urlpatterns = patterns('',
     url(r'^groupmessaging/?$', index.index, name='index'),
@@ -29,4 +30,8 @@ urlpatterns = patterns('',
         name='manage_recipients'),
     url(r'^groupmessaging/recipients/delete/(\d+)/?$', recipients.delete, \
         name='recipients_delete'),
+    url(r'^groupmessaging/outgoinglog/?$', outgoinglog.list, \
+        name='outgoinglog_list'),
+    url(r'^groupmessaging/outgoinglog/filter/?$', outgoinglog.filter, \
+        name='outgoinglog_filter'),
 )
