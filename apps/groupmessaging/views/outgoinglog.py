@@ -37,7 +37,7 @@ def list(request, context):
 
 @webuser_required
 def filter(request, context):
-    print "gggggggggggggggggggggggggggggg123"
+   
     outgoinglog_list=""
     form =""
     outgoinglog=""
@@ -45,35 +45,34 @@ def filter(request, context):
     senderMsg=""
     identityMsg=""
     textMsg=""
-    if request.method == 'POST':
-        form = LogForm(request.POST)
-     
-        if form.is_valid():
-                statusMsg = form.cleaned_data['status']
-               # senderMsg = form.cleaned_data['sender']
-               # identityMsg  = form.cleaned_data['identity']
-               # textMsg  = form.cleaned_data['text']
+    outgoinglog2=""
+    #if request.method == 'POST':
+    form = LogForm(request.POST)
 
-        else:
-                 print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
+    if form.is_valid():
+            statusMsg = form.cleaned_data['status']
+           # senderMsg = form.cleaned_data['sender']
+           # identityMsg  = form.cleaned_data['identity']
+           # textMsg  = form.cleaned_data['text']
 
-        
-        outgoinglog = OutgoingLog.objects.filter(status=statusMsg)
-        outgoinglog2 = OutgoingLog.objects.all()
-        paginator = Paginator(outgoinglog,10)
-
-        try:
-            page = int(request.GET.get('page', '1'))
-        except ValueError:
-            page = 1
-        
-        try:
-            outgoinglog_list = paginator.page(page)
-        except (EmptyPage, InvalidPage):
-            outgoinglog_list = paginator.page(paginator.num_pages)
     else:
-        print "elseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
- 
+             print "form is not valid"
+
+
+    outgoinglog = OutgoingLog.objects.filter(status=statusMsg)
+    outgoinglog2 = OutgoingLog.objects.all()
+    paginator = Paginator(outgoinglog,10)
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    try:
+        outgoinglog_list = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        outgoinglog_list = paginator.page(paginator.num_pages)
+     
     mycontext = {'outgoinglog': outgoinglog_list,'form':form ,'count':0,'logs':outgoinglog2}
     context.update(mycontext)
     return render_to_response(request, 'outgoing_log.html', context )
